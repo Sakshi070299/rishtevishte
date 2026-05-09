@@ -1,0 +1,362 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             String         @id @default(cuid())
+  mobile         String         @unique
+  name           String?
+  email          String?
+  role           Role           @default(USER)
+  isActive       Boolean        @default(true)
+  lastLoginAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  isSuperAdmin   Boolean        @default(false)
+  donations      Donation[]
+  profiles       Profile[]
+  searchLogs     SearchLog[]
+  sessions       Session[]
+  teamActivities TeamActivity[]
+
+  @@index([role, isActive])
+  @@map("users")
+}
+
+model Otp {
+  id        String   @id @default(cuid())
+  mobile    String
+  code      String
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([mobile, code])
+  @@index([expiresAt])
+  @@map("otps")
+}
+
+model Profile {
+  id                       String             @id @default(cuid())
+  registrationNumber       String             @unique
+  internalRegistrationNo   String?
+  userId                   String
+  status                   ProfileStatus      @default(PENDING_PAYMENT)
+  gender                   Gender
+  fullName                 String
+  dateOfBirth              DateTime
+  birthTime                String?
+  birthPlace               String?
+  height                   String?
+  weight                   String?
+  bloodGroup               String?
+  complexion               String?
+  manglikStatus            ManglikStatus      @default(NON_MANGLIK)
+  marriageStatus           MarriageStatus     @default(UNMARRIED)
+  disability               Boolean            @default(false)
+  disabilityDetails        String?
+  divorceDate              DateTime?
+  childrenDetails          String?
+  education                String?
+  profession               Profession         @default(OTHER)
+  professionDetails        String?
+  monthlyIncome            Int?
+  incomeType               String?
+  incomeValue              String?
+  diet                     String?
+  healthStatus             String?
+  fatherName               String
+  motherName               String?
+  guardianPhone            String
+  guardianEmail            String?
+  address                  String?
+  city                     String?
+  state                    String?
+  pincode                  String?
+  marriedBrothers          Int                @default(0)
+  unmarriedBrothers        Int                @default(0)
+  marriedSisters           Int                @default(0)
+  unmarriedSisters         Int                @default(0)
+  house                    String?
+  business                 String?
+  otherProperty            String?
+  preferredCaste           String?
+  preferredAgeMin          Int?
+  preferredAgeMax          Int?
+  preferredLocation        String?
+  photoUrl                 String?
+  settledAt                DateTime?
+  settledBy                String?
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  completionPct            Int                @default(0)
+  expiresAt                DateTime?
+  registrationSource       RegistrationSource @default(ONLINE)
+  createdById              String?
+  heightUnit               HeightUnit         @default(CM)
+  alternateMobile          String?
+  /// * Partner work-style preference (वरीयता): Job / Business / Homely / Suitable
+  partnerPreference        String?
+  /// * Partner preference details (वरीयता विवरण)
+  partnerPreferenceDetails String?
+  /// Want to settle abroad (Yes/No)
+  wantToSettleAbroad       Boolean            @default(false)
+  /// Flexible father income text, e.g. "50k", "5 Lakh"
+  fatherIncome             String?
+  fatherProfession         String?
+  glasses                  Boolean            @default(false)
+  glassesType              String?
+  religion                 String?
+  caste                    String?
+  /// Date of marriage (widow / widower)
+  marriageDate             DateTime?
+  /// Father income type: MONTHLY or YEARLY (optional)
+  fatherIncomeType         String?
+  donations                Donation[]
+  user                     User               @relation(fields: [userId], references: [id])
+
+  @@index([gender, manglikStatus, profession, status])
+  @@index([registrationNumber])
+  @@index([internalRegistrationNo])
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([status])
+  @@index([createdAt])
+  @@index([createdById])
+  @@map("profiles")
+}
+
+
+model ArchivedProfile {
+  id                String   @id @default(cuid())
+  originalProfileId String   @unique
+  userId            String?
+  archivedAt        DateTime @default(now())
+  reason            String
+  data              Json
+
+  @@index([userId])
+  @@index([archivedAt])
+  @@map("archived_profiles")
+}
+
+model Donation {
+  id                  String        @id @default(cuid())
+  userId              String?
+  profileId           String?
+  type                DonationType
+  amount              Int
+  currency            String        @default("INR")
+  gateway             String        @default("razorpay")
+  gatewayOrderId      String?       @unique
+  gatewayPaymentId    String?       @unique
+  gatewaySignature    String?
+  paymentStatus       PaymentStatus @default(PENDING)
+  donorName           String?
+  donorMobile         String?
+  donorEmail          String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  invoiceNumber       String?       @unique
+  collectedById       String?
+  paymentMethod       PaymentMethod @default(ONLINE)
+  splitCashRupees     Int?
+  splitOnlineRupees   Int?
+  splitFreeRupees     Int?
+  splitFreeApprovedBy String?
+  splitFreeReason     String?
+  splitPaymentMethods String[]      @default([])
+  profile             Profile?      @relation(fields: [profileId], references: [id])
+  user                User?         @relation(fields: [userId], references: [id])
+
+  @@index([type, paymentStatus])
+  @@index([createdAt])
+  @@index([invoiceNumber])
+  @@index([profileId])
+  @@index([userId])
+  @@index([collectedById])
+  @@map("donations")
+}
+
+model SearchLog {
+  id        String   @id @default(cuid())
+  userId    String
+  profileId String
+  weekStart DateTime
+  viewedAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, profileId, weekStart])
+  @@index([userId, weekStart])
+  @@map("search_logs")
+}
+
+model TeamActivity {
+  id        String   @id @default(cuid())
+  action    String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@map("team_activities")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  role      String
+  mobile    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model SiteSettings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  label     String?
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  title     String
+  titleHi   String?
+  imageUrl  String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([isActive, sortOrder])
+  @@map("gallery_images")
+}
+
+model Notification {
+  id        String              @id @default(cuid())
+  mobile    String?
+  email     String?
+  channel   NotificationChannel
+  type      String
+  content   String
+  status    NotificationStatus  @default(PENDING)
+  sentAt    DateTime?
+  error     String?
+  createdAt DateTime            @default(now())
+
+  @@index([channel, status])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  titleHi   String?
+  imageUrl  String
+  linkUrl   String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([isActive, sortOrder])
+  @@map("banners")
+}
+
+enum Role {
+  USER
+  TEAM
+  ADMIN
+  MANAGER
+}
+
+enum RegistrationSource {
+  ONLINE
+  OFFLINE
+}
+
+enum PaymentMethod {
+  ONLINE
+  CASH
+  FREE
+}
+
+enum Gender {
+  BRIDE
+  GROOM
+}
+
+enum ManglikStatus {
+  MANGLIK
+  NON_MANGLIK
+  ANSHIK_MANGLIK
+}
+
+enum MarriageStatus {
+  UNMARRIED
+  DIVORCEE
+  WIDOW
+  WIDOWER
+}
+
+enum Profession {
+  JOB
+  BUSINESS
+  HOMELY
+  OTHER
+  PRIVATE_JOB
+  GOVERNMENT_JOB
+}
+
+enum HeightUnit {
+  CM
+  IN
+  FT
+}
+
+enum ProfileStatus {
+  PENDING_PAYMENT
+  ACTIVE
+  SETTLED
+  INACTIVE
+}
+
+enum DonationType {
+  REGISTRATION
+  GENERAL
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum NotificationChannel {
+  SMS
+  WHATSAPP
+  EMAIL
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+}

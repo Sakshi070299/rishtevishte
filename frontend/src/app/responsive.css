@@ -1,0 +1,74 @@
+/* ═══════════════════════════════════════════════════════
+   FEATURE 12: Mobile Responsive Fixes
+   Additional Tailwind utilities for team/admin panels
+   Import this in globals.css
+   ═══════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Team panel table responsive */
+  .table-responsive {
+    @apply overflow-x-auto -mx-4 sm:mx-0;
+  }
+  .table-responsive table {
+    @apply min-w-[640px];
+  }
+
+  /* Admin tabs horizontal scroll on mobile */
+  .admin-tabs {
+    @apply flex gap-1 overflow-x-auto pb-1 scrollbar-hide;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .admin-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Stat cards stacking on small screens */
+  .stat-grid-responsive {
+    @apply grid grid-cols-2 sm:grid-cols-4 gap-3;
+  }
+
+  /* Form grids single-column on mobile */
+  .form-grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-3;
+  }
+
+  /* Sidebar overlay on mobile */
+  .sidebar-mobile-overlay {
+    @apply fixed inset-0 bg-black/50 z-40 lg:hidden;
+  }
+
+  /* Touch-friendly buttons */
+  .touch-btn {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Safe area padding for notch devices */
+  .safe-area {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Print-specific styles */
+  @media print {
+    .no-print { display: none !important; }
+    .print-only { display: block !important; }
+    body { background: white !important; }
+    .sidebar, .topbar, .float-btns { display: none !important; }
+    .main-content { margin-left: 0 !important; }
+  }
+}
+
+/* ── Extra breakpoint helpers ── */
+@media (max-width: 480px) {
+  .xs-stack { flex-direction: column !important; }
+  .xs-full { width: 100% !important; }
+  .xs-text-sm { font-size: 0.75rem !important; }
+  .xs-p-3 { padding: 0.75rem !important; }
+  .xs-gap-2 { gap: 0.5rem !important; }
+}
+
+@media (max-width: 360px) {
+  .xxs-hide { display: none !important; }
+}

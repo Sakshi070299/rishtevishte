@@ -1,0 +1,340 @@
+import type { Metadata } from 'next';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Contact Us - Mandir',
+};
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const MAPS_URL =
+  'https://maps.google.com/?q=Hanuman+Murti+Geeta+Colony+Delhi';
+
+const INFO_ITEMS = [
+  {
+    icon: MapPin,
+    label: 'Address',
+    labelHi: 'पता',
+    content: [
+      'Mandir,',
+      'Geeta Colony, Ram Lila Ground Chowk,',
+      'East Delhi — 110031',
+    ],
+  },
+  {
+    icon: Phone,
+    label: 'Phone',
+    labelHi: 'फोन',
+    content: ['9810277873', '9899957029'],
+  },
+  {
+    icon: Mail,
+    label: 'Email',
+    labelHi: 'ईमेल',
+    content: ['hanumanmandirgeetacolony@gmail.com'],
+    href: 'mailto:hanumanmandirgeetacolony@gmail.com',
+  },
+  {
+    icon: Clock,
+    label: 'Timings',
+    labelHi: 'समय',
+    content: [
+      'Morning: 5:00 AM – 12:00 PM',
+      'Evening: 4:00 PM – 9:30 PM',
+    ],
+  },
+] as const;
+
+const SCHEDULE: [string, string][] = [
+  ['5:00 AM', 'Temple Opens / मंदिर खुलना'],
+  ['6:30 AM', 'Mangal Aarti / मंगल आरती'],
+  ['12:00 PM', 'Afternoon Break / दोपहर विश्राम'],
+  ['4:00 PM', 'Temple Reopens / पुनः खुलना'],
+  ['7:30 PM', 'Sandhya Aarti / संध्या आरती'],
+  ['9:30 PM', 'Temple Closes / मंदिर बंद'],
+];
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default function ContactPage() {
+  return (
+    <>
+      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      <section
+        className="bg-gradient-to-br from-[#8B1A1A] via-[#5a0f0f] to-[#3D1F0B] text-white text-center py-16 px-6 relative overflow-hidden"
+        aria-label="Page hero"
+      >
+        <div
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(212,160,23,0.15),transparent_60%)] pointer-events-none"
+          aria-hidden="true"
+        />
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <p
+            className="font-hindi text-[#D4A017] text-4xl mb-3 select-none"
+            aria-hidden="true"
+          >
+            ॐ
+          </p>
+          <p className="font-hindi text-[#F5E6B8] text-2xl md:text-3xl mb-2">
+            संपर्क करें
+          </p>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+            Contact Us
+          </h1>
+          <p className="text-white/70 text-base max-w-lg mx-auto leading-relaxed">
+            Visit us, call, or write — we are here to serve the community with
+            devotion.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Two-column layout ─────────────────────────────────────────── */}
+      <section
+        className="max-w-6xl mx-auto px-4 sm:px-6 py-14"
+        aria-label="Contact information"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* ── LEFT: Temple Information ──────────────────────────────── */}
+          <div>
+            <div className="bg-white border border-[#E8D5C4] rounded-2xl shadow-sm overflow-hidden">
+              {/* Card header */}
+              <div className="bg-gradient-to-r from-[#8B1A1A] to-[#5a0f0f] px-6 py-4">
+                <h2 className="text-white font-bold text-lg">
+                  Temple Information
+                </h2>
+                <p className="font-hindi text-[#F5E6B8] text-sm mt-0.5">
+                  मंदिर की जानकारी
+                </p>
+              </div>
+
+              {/* Info items */}
+              <ul className="divide-y divide-[#F5E6B8]">
+                {INFO_ITEMS.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.label} className="flex gap-4 px-6 py-5">
+                      {/* Icon */}
+                      <span
+                        className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#F5E6B8] flex items-center justify-center mt-0.5"
+                        aria-hidden="true"
+                      >
+                        <Icon
+                          size={18}
+                          strokeWidth={2}
+                          className="text-[#D4A017]"
+                        />
+                      </span>
+
+                      {/* Content */}
+                      <div className="min-w-0">
+                        <p className="font-semibold text-[#8B1A1A] text-sm">
+                          {item.label}
+                          <span className="font-hindi text-[#D4A017] text-xs ml-2 font-normal">
+                            {item.labelHi}
+                          </span>
+                        </p>
+                        {item.label === 'Phone' ? (
+                          <div className="space-y-1">
+                            {item.content.map((line) => (
+                              <a
+                                key={line}
+                                href={`tel:+91${line.replace(/\\D/g, '')}`}
+                                className="block text-[#3D1F0B]/80 text-sm leading-relaxed hover:text-[#8B1A1A] transition-colors duration-200 break-all"
+                              >
+                                +91 {line}
+                              </a>
+                            ))}
+                          </div>
+                        ) : 'href' in item && item.href ? (
+                          <a
+                            href={item.href}
+                            className="text-[#3D1F0B]/80 text-sm leading-relaxed hover:text-[#8B1A1A] transition-colors duration-200 break-all"
+                          >
+                            {item.content[0]}
+                          </a>
+                        ) : 'content' in item ? (
+                          <address className="not-italic">
+                            {item.content.map((line) => (
+                              <span
+                                key={line}
+                                className="block text-[#3D1F0B]/80 text-sm leading-relaxed"
+                              >
+                                {line}
+                              </span>
+                            ))}
+                          </address>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+
+          {/* ── RIGHT: Map + Schedule ──────────────────────────────────── */}
+          <div className="space-y-6">
+            {/* Google Maps placeholder */}
+            <div className="bg-white border border-[#E8D5C4] rounded-2xl shadow-sm overflow-hidden">
+              {/* Map visual placeholder */}
+              <div className="h-52 bg-gradient-to-br from-[#FFFAF5] to-[#F5E6B8] flex flex-col items-center justify-center gap-3 relative">
+                {/* Decorative grid lines */}
+                <div
+                  className="absolute inset-0 opacity-20"
+                  aria-hidden="true"
+                  style={{
+                    backgroundImage:
+                      'repeating-linear-gradient(0deg,#D4A017 0,#D4A017 1px,transparent 1px,transparent 40px), repeating-linear-gradient(90deg,#D4A017 0,#D4A017 1px,transparent 1px,transparent 40px)',
+                  }}
+                />
+
+                {/* Pin icon */}
+                <div className="relative z-10 w-14 h-14 rounded-full bg-[#8B1A1A] flex items-center justify-center shadow-lg shadow-[#8B1A1A]/40">
+                  <MapPin size={26} className="text-white" aria-hidden="true" />
+                </div>
+
+                <div className="relative z-10 text-center">
+                  <p className="font-bold text-[#8B1A1A] text-base">
+                    Google Map
+                  </p>
+                  <p className="font-hindi text-[#3D1F0B]/60 text-sm mt-0.5">
+                    स्थान देखें
+                  </p>
+                </div>
+              </div>
+
+              {/* Card footer */}
+              <div className="px-5 py-4 border-t border-[#F5E6B8] flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-[#3D1F0B]/60 text-xs leading-relaxed max-w-[220px]">
+                  Mandir, Geeta Colony, Ram Lila Ground Chowk, East Delhi — 110031
+                </p>
+                <a
+                  href={MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-shrink-0 inline-flex items-center gap-1.5 bg-[#8B1A1A] hover:bg-[#5a0f0f] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-sm shadow-[#8B1A1A]/30"
+                  aria-label="Open temple location in Google Maps (opens in new tab)"
+                >
+                  Open in Google Maps
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Daily Schedule card */}
+            <div className="bg-white border border-[#E8D5C4] rounded-2xl shadow-sm overflow-hidden">
+              {/* Card header */}
+              <div className="bg-gradient-to-r from-[#D4A017] to-[#b8860b] px-6 py-4">
+                <h2 className="text-[#3D1F0B] font-bold text-lg">
+                  Daily Schedule
+                </h2>
+                <p className="font-hindi text-[#3D1F0B]/70 text-sm mt-0.5">
+                  दैनिक कार्यक्रम
+                </p>
+              </div>
+
+              {/* Schedule table */}
+              <table className="w-full" aria-label="Daily temple schedule">
+                <thead className="sr-only">
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Activity</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#F5E6B8]">
+                  {SCHEDULE.map(([time, activity], index) => {
+                    // Highlight aarti rows
+                    const isAarti =
+                      activity.toLowerCase().includes('aarti') ||
+                      activity.toLowerCase().includes('आरती');
+                    const isBreak =
+                      activity.toLowerCase().includes('break') ||
+                      activity.toLowerCase().includes('बंद');
+
+                    return (
+                      <tr
+                        key={time}
+                        className={[
+                          'transition-colors',
+                          isAarti
+                            ? 'bg-[#FFFAF5]'
+                            : isBreak
+                              ? 'bg-[#f9f9f9]'
+                              : '',
+                        ].join(' ')}
+                      >
+                        {/* Time cell */}
+                        <td className="pl-6 pr-4 py-3.5  align-top">
+                          <span
+                            className={[
+                              'inline-block text-xs font-bold px-2 py-1 rounded-lg',
+                              isAarti
+                                ? 'bg-[#F5E6B8] text-[#8B1A1A]'
+                                : isBreak
+                                  ? 'bg-[#f0f0f0] text-[#3D1F0B]/50'
+                                  : 'bg-[#8B1A1A]/8 text-[#8B1A1A]',
+                            ].join(' ')}
+                          >
+                            {time}
+                          </span>
+                        </td>
+
+                        {/* Activity cell */}
+                        <td className="pr-6 py-3.5 align-top text-right">
+                          <p
+                            className={[
+                              'text-sm font-medium leading-snug',
+                              isBreak
+                                ? 'text-[#3D1F0B]/50'
+                                : 'text-[#3D1F0B]',
+                            ].join(' ')}
+                          >
+                            {/* Split on " / " to render Hindi part with font-hindi */}
+                            {activity.includes(' / ') ? (
+                              <>
+                                <span>{activity.split(' / ')[0]}</span>
+                                <span
+                                  className="font-hindi text-[#D4A017] text-xs ml-1"
+                                  aria-hidden="true"
+                                >
+                                  / {activity.split(' / ')[1]}
+                                </span>
+                              </>
+                            ) : (
+                              activity
+                            )}
+                          </p>
+                          {isAarti && (
+                            <p
+                              className="text-[10px] text-[#8B1A1A]/60 mt-0.5"
+                              aria-hidden="true"
+                            >
+                              Special darshan
+                            </p>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Bottom devotional strip ──────────────────────────────────── */}
+        <div className="mt-10 bg-gradient-to-r from-[#8B1A1A] to-[#5a0f0f] text-white rounded-2xl px-8 py-8 text-center shadow-lg">
+          <p className="font-hindi text-[#F5E6B8] text-xl mb-1">
+            ।। जय श्री राम ।।
+          </p>
+          <p className="text-white/60 text-sm">
+            Managed by{' '}
+            <span className="text-white/90 font-medium">
+              Geeta Colony Dharmik Ramlila Committee (Reg. 1962).
+            </span>
+          </p>
+        </div>
+      </section>
+    </>
+  );
+}

@@ -1,0 +1,3 @@
+ALTER TABLE "profiles"
+ADD COLUMN IF NOT EXISTS "incomeType" TEXT,
+ADD COLUMN IF NOT EXISTS "incomeValue" TEXT;

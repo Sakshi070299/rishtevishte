@@ -1,0 +1,3 @@
+ALTER TABLE "profiles"
+ADD COLUMN IF NOT EXISTS "glassesType" TEXT,
+ADD COLUMN IF NOT EXISTS "caste" TEXT;
