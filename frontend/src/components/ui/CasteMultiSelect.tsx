@@ -21,6 +21,7 @@ interface CasteMultiSelectProps {
   onChange: (castes: string[]) => void;
 }
 
+
 export function CasteMultiSelect({ selected, onChange }: CasteMultiSelectProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
