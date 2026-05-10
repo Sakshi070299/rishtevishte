@@ -543,7 +543,6 @@ function profileToFormData(p: Profile): FormData {
 
 // ─── FORM FIELD COMPONENTS ───────────────────────────
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // function FormInput({
 //   label,
 //   hi,
@@ -658,7 +657,6 @@ function FormSelect({
     </div>
   );
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // ─── PROPS ────────────────────────────────────────────
 

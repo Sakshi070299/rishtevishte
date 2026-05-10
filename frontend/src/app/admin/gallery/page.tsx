@@ -452,7 +452,7 @@ export default function GalleryPage() {
           <ImageOff size={36} style={{ opacity: 0.4 }} />
           <p className="font-semibold">No gallery images yet</p>
           <p className="text-sm" style={{ opacity: 0.7 }}>
-            Click "Add Image" above to upload your first gallery image.
+            Click &quot;Add Image&quot; above to upload your first gallery image.
           </p>
         </div>
       )}

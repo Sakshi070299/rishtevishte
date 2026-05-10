@@ -562,7 +562,7 @@ export default function BannersPage() {
           <ImagePlus size={36} style={{ opacity: 0.35 }} />
           <p className="font-semibold">No banners yet</p>
           <p className="text-sm" style={{ opacity: 0.7 }}>
-            Click "Add Banner" above to create your first homepage banner.
+            Click &quot;Add Banner&quot; above to create your first homepage banner.
           </p>
         </div>
       )}
