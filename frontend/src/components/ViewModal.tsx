@@ -1,7 +1,7 @@
 import { resolvePhotoUrl } from "@/lib/api";
 import { fmtDate } from "@/lib/download-biodata";
 import { Profile } from "@/types";
-import { X } from "lucide-react";
+import { X, Lock } from "lucide-react";
 import { ProfileAvatar } from "@/components/ProfileAvatar";
 
 function fatherIncomeDisplay(p: Profile): string {
@@ -16,12 +16,29 @@ function age(dob: string) {
     (Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 60 * 60 * 1000),
   );
 }
+
+function maskPhone(phone: string | null | undefined): string {
+  if (!phone) return "—";
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length < 4) return "****";
+  return digits.slice(0, 2) + "****" + digits.slice(-2);
+}
+
+function maskEmail(email: string | null | undefined): string {
+  if (!email) return "—";
+  const [local, domain] = email.split("@");
+  if (!domain) return "****@****";
+  return local.slice(0, 2) + "****@" + domain;
+}
+
 export function ViewModal({
   profile,
   onClose,
+  showContactDetails = false,
 }: {
   profile: Profile;
   onClose: () => void;
+  showContactDetails?: boolean;
 }) {
   const incomeForView = (p: Profile): { label: string; value: string | null } => {
     const raw = p.incomeValue?.trim();
@@ -46,7 +63,7 @@ export function ViewModal({
     children: React.ReactNode;
   }) => (
     <div className="mb-5">
-      <h4 className="text-xs font-bold text-maroon uppercase tracking-wide mb-2 border-b border-[#E8D5C4] pb-1">
+      <h4 className="text-xs font-bold text-navy uppercase tracking-wide mb-2 border-b border-gray-200 pb-1">
         {title}
       </h4>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">{children}</div>
@@ -61,12 +78,26 @@ export function ViewModal({
   }) =>
     value ? (
       <div className="text-sm min-w-0">
-        <span className="text-temple-brown-light">{label}:</span>{" "}
-        <p className="text-temple-brown inline font-semibold [overflow-wrap:anywhere]">
+        <span className="text-gray-500">{label}:</span>{" "}
+        <p className="text-navy inline font-semibold [overflow-wrap:anywhere]">
           {value}
         </p>
       </div>
     ) : null;
+
+  const HiddenField = ({
+    label,
+  }: {
+    label: string;
+  }) => (
+    <div className="text-sm min-w-0">
+      <span className="text-gray-500">{label}:</span>{" "}
+      <span className="inline-flex items-center gap-1 text-primary/60 font-medium text-xs bg-primary/5 px-2 py-0.5 rounded-full">
+        <Lock size={10} /> Hidden
+      </span>
+    </div>
+  );
+
   const fullPhotoUrl = resolvePhotoUrl(profile.photoUrl);
   return (
     <div
@@ -74,8 +105,7 @@ export function ViewModal({
       onClick={onClose}
     >
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl mb-10" onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
-        <div className="bg-gradient-to-r from-maroon to-primary rounded-t-2xl p-4 sm:p-5 text-white flex items-start justify-between gap-3">
+        <div className="bg-gradient-to-r from-navy to-navy-light rounded-t-2xl p-4 sm:p-5 text-white flex items-start justify-between gap-3">
           <div className="flex items-start gap-3 sm:gap-4 min-w-0">
             <a
               href={fullPhotoUrl ?? "/images/default-avatar.svg"}
@@ -185,9 +215,19 @@ export function ViewModal({
             <Field label="Father's Profession" value={profile.fatherProfession} />
             <Field label="Father's Income" value={fatherIncomeDisplay(profile)} />
             <Field label="Mother" value={profile.motherName} />
-            <Field label="Phone" value={profile.guardianPhone} />
-            <Field label="Alternate Mobile" value={profile.alternateMobile} />
-            <Field label="Email" value={profile.guardianEmail} />
+            {showContactDetails ? (
+              <>
+                <Field label="Phone" value={profile.guardianPhone} />
+                <Field label="Alternate Mobile" value={profile.alternateMobile} />
+                <Field label="Email" value={profile.guardianEmail} />
+              </>
+            ) : (
+              <>
+                <Field label="Phone" value={maskPhone(profile.guardianPhone)} />
+                {profile.alternateMobile && <Field label="Alternate Mobile" value={maskPhone(profile.alternateMobile)} />}
+                {profile.guardianEmail && <Field label="Email" value={maskEmail(profile.guardianEmail)} />}
+              </>
+            )}
             <Field label="Address" value={profile.address} />
             <Field label="Married Brothers" value={profile.marriedBrothers} />
             <Field
@@ -218,6 +258,18 @@ export function ViewModal({
             <Field label="Preference (वरीयता)" value={profile.partnerPreference} />
             <Field label="Preference Details (वरीयता विवरण)" value={profile.partnerPreferenceDetails} />
           </Section>
+
+          {!showContactDetails && (
+            <div className="mt-4 p-3 bg-primary/5 rounded-xl border border-primary/10 text-center">
+              <p className="text-xs text-primary font-medium flex items-center justify-center gap-1.5">
+                <Lock size={12} />
+                Contact details are hidden for privacy protection
+              </p>
+              <p className="font-hindi text-xs text-primary/60 mt-0.5">
+                संपर्क विवरण गोपनीयता के लिए छुपाए गए हैं
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

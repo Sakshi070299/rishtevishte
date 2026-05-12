@@ -1045,7 +1045,7 @@ export default function RegisterForm({
         key: order.key,
         amount: order.amount * 100,
         currency: order.currency,
-        name: "Mandir",
+        name: "TheMarriageHome.com",
         description: `Registration Fee — ${regNumber}`,
         order_id: order.orderId,
         handler: async (response: RazorpayResponse) => {
@@ -1937,7 +1937,7 @@ export default function RegisterForm({
                 <div className="grid sm:grid-cols-3 gap-3">
                   {(
                     [
-                      ["CASH", "Cash (नकद)", "Collected at temple"],
+                      ["CASH", "Cash (नकद)", "Collected at office"],
                       [
                         "ONLINE",
                         "Online (ऑनलाइन)",

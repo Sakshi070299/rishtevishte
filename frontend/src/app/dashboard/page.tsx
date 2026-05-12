@@ -32,7 +32,7 @@ import {
 import { useDashboardNavProfiles } from '@/app/dashboard/dashboard-nav-profiles-context';
 import type { Profile, WeeklyLimitInfo } from '@/types';
 import Image from "next/image";
-import { downloadBiodata, printCard } from "@/lib/download-biodata";
+import { downloadBiodata } from "@/lib/download-biodata";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 
@@ -409,16 +409,6 @@ function ProfileCard({ profile, onDeactivate }: ProfileCardProps) {
               <FileDown size={12} /> Biodata
             </button>
           )}
-          {/* Print Card */}
-          {profile.status === "SETTLED" && (
-            <button
-              type="button"
-              onClick={() => printCard(profile)}
-              className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-maroon/10 text-maroon font-medium hover:bg-maroon/20 transition-colors"
-            >
-              <CreditCard size={12} /> Print Card
-            </button>
-          )}
 
           {/* Deactivate — only for ACTIVE */}
           {isActive && (
@@ -558,23 +548,24 @@ export default function DashboardPage() {
   return (
     <>
       {/* ── Welcome Banner ─────────────────────────────── */}
-      <div className="bg-gradient-to-r from-maroon to-primary rounded-2xl p-6 sm:p-8 text-white mb-8">
+      <div className="bg-gradient-to-r from-navy to-navy-light rounded-2xl p-6 sm:p-8 text-white mb-8">
         <div className="flex items-start gap-4">
           <span className="mt-1 shrink-0 inline-flex">
             <Image
-              className="size-12"
-              src={"/icons/om-icon-v2.png"}
-              width={40}
-              height={40}
-              alt="om-logo"
+              className="h-12 w-auto"
+              src="/icons/marriagehome-logo.png"
+              width={48}
+              height={48}
+              alt="TheMarriageHome.com"
+              unoptimized
             />
           </span>
           <div className="min-w-0">
             <h2 className="text-xl sm:text-2xl font-bold leading-tight">
               Welcome back, {userName}
             </h2>
-            <p className="font-hindi text-gold-light text-sm mt-0.5">
-              बजरंगबली के आशीर्वाद से आपका स्वागत है
+            <p className="text-gold text-sm mt-0.5 font-medium">
+              Find Your Forever Home
             </p>
             <p className="text-white/70 text-xs mt-2 flex items-center gap-1.5">
               <CalendarDays size={13} />

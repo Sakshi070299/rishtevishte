@@ -310,7 +310,7 @@ export default function ManagerPrintPage() {
             {/* Print header — only visible when printing */}
             <div className="print:block">
               <h2 className="text-lg font-bold hidden print:block" style={{ color: '#064e3b' }}>
-                RishteNate — Registrations
+                TheMarriageHome.com — Registrations
               </h2>
               <p className="print-meta hidden print:block text-xs text-gray-500 mb-3">
                 Date range: {formatDate(fromDate)} to {formatDate(toDate)} &bull; Total:{' '}

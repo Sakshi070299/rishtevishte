@@ -84,8 +84,8 @@ export function AdminAuth() {
               />
             </Link>
           </div>
-          <h1 className="text-2xl font-bold text-maroon">RishteNate</h1>
-          <p className="font-hindi text-primary">रिश्तेसेतु — एडमिन लॉगिन</p>
+          <h1 className="text-2xl font-bold text-maroon">TheMarriageHome.com</h1>
+          <p className="font-hindi text-primary">एडमिन लॉगिन</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg border border-[#E8D5C4] p-8">

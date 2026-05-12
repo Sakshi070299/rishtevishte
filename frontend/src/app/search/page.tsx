@@ -16,7 +16,8 @@ import {
   heightToCm,
   validateHeightRangeFilter,
 } from "@/lib/height-convert";
-import { downloadBiodata, printCard } from "@/lib/download-biodata";
+import { downloadBiodata } from "@/lib/download-biodata";
+import { Lock } from "lucide-react";
 import { State } from "country-state-city";
 
 const PROFESSION_LABELS: Record<string, string> = {
@@ -572,7 +573,9 @@ export default function SearchPage() {
                     </div>
                     <div>
                       <span className="text-temple-brown-light">Mobile:</span>{" "}
-                      {profile.guardianPhone}
+                      <span className="inline-flex items-center gap-1 text-primary/60 font-medium text-xs">
+                        <Lock size={10} /> Hidden
+                      </span>
                     </div>
                     <div>
                       <span className="text-temple-brown-light">DOB:</span>{" "}
@@ -644,20 +647,13 @@ export default function SearchPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2 mt-4 pt-3 border-t border-[#E8D5C4]">
+                <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200">
                   <button
                     type="button"
                     onClick={() => downloadBiodata(profile)}
                     className="text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary font-medium hover:bg-primary/20 flex items-center gap-1"
                   >
                     <Eye size={12} /> View Biodata
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => printCard(profile)}
-                    className="text-xs px-3 py-1.5 rounded-lg bg-maroon/10 text-maroon font-medium hover:bg-maroon/20 flex items-center gap-1"
-                  >
-                    <Eye size={12} /> View Card
                   </button>
                 </div>
               </div>

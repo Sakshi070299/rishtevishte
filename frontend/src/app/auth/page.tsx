@@ -111,14 +111,14 @@ function AuthPageContent() {
             <Link href={"/"}>
               <Image
                 className="size-12 mx-auto"
-                src={"/icons/om-icon-v2.png"}
+                src={"/icons/marriagehome-logo.png"}
                 width={40}
                 height={40}
-                alt="om-logo"
+                alt="TheMarriageHome logo"
               />
             </Link>
           </div>
-          <h1 className="text-2xl font-bold text-maroon">RishteNate</h1>
+          <h1 className="text-2xl font-bold text-maroon">TheMarriageHome.com</h1>
           <p className="font-hindi text-primary">रिश्तेसेतु — विवाह सेवा</p>
         </div>
 

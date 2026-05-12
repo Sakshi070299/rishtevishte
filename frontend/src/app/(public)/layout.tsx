@@ -16,22 +16,15 @@ import {
   Users,
 } from "lucide-react";
 import { isAuthenticated, getUser, clearAuth } from "@/lib/api";
-import { OmSymbol } from "@/components/OmSymbol";
 import Image from "next/image";
 
-// ─── Temple constants ─────────────────────────────────────────────────────────
-
-const TEMPLE = {
-  name: "Mandir",
-  nameHi: "मंदिर",
-  tagline: "Geeta Colony, East Delhi",
-  taglineHi: "गीता कॉलोनी, पूर्वी दिल्ली",
-  address:
-    "Mandir Geeta Colony, Ram Lila Ground Chowk, East Delhi — 110031",
+const SITE = {
+  name: "TheMarriageHome",
+  domain: ".com",
+  tagline: "Find Your Forever Home",
+  taglineHi: "अपना जीवनसाथी खोजें",
   phone: "+91 9810277873",
-  email: "hanumanmandirgeetacolony@gmail.com",
-  committee: "Managed by Geeta Colony Dharmik Ramlila Committee (Reg. 1962).",
-  mapsUrl: "https://maps.google.com/?q=Hanuman+Murti+Geeta+Colony+Delhi",
+  email: "info@themarriagehome.com",
 };
 
 const PHONE_NUMBERS = ["9810277873", "9899957029"] as const;
@@ -52,8 +45,6 @@ const NAV = [
   { href: "/contact", label: "Contact", hi: "संपर्क" },
 ];
 
-// ─── Header ───────────────────────────────────────────────────────────────────
-
 function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,7 +55,6 @@ function Header() {
     mobile: string;
   } | null>(null);
 
-  // Check auth state on mount and pathname change
   useEffect(() => {
     if (isAuthenticated()) {
       const u = getUser();
@@ -75,7 +65,6 @@ function Header() {
     }
   }, [pathname]);
 
-  // Close dropdown on outside click
   useEffect(() => {
     if (!userDropdown) return;
     const handler = () => setUserDropdown(false);
@@ -116,34 +105,32 @@ function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 bg-gradient-to-r from-maroon-dark via-maroon to-maroon-dark shadow-lg shadow-black/30">
-      {/* ── Desktop header ───────────────────────────────────────── */}
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+      {/* Desktop header */}
       <div className="hidden lg:flex items-center justify-between max-w-7xl mx-auto px-6 py-3 gap-6">
-        {/* Logo */}
         <Link
           href="/"
           className="flex items-center gap-3 flex-shrink-0 group"
-          aria-label="Home — Mandir"
+          aria-label="Home — TheMarriageHome.com"
         >
           <Image
-            className="size-8"
+            src="/icons/marriagehome-logo.png"
+            width={44}
+            height={44}
+            alt="TheMarriageHome.com"
+            className="h-11 w-auto"
             unoptimized
-            src={"/icons/om-icon-v2.png"}
-            width={32}
-            height={32}
-            alt="om-logo"
           />
           <div className="leading-tight">
-            <p className="font-bold text-white text-sm tracking-wide group-hover:text-gold transition-colors duration-200">
-              {TEMPLE.name}
+            <p className="font-bold text-navy text-sm tracking-wide">
+              {SITE.name}<span className="text-primary">{SITE.domain}</span>
             </p>
-            <p className="font-hindi text-gold text-xs mt-0.5">
-              {TEMPLE.nameHi}
+            <p className="text-gold text-[10px] mt-0.5 font-medium">
+              {SITE.tagline}
             </p>
           </div>
         </Link>
 
-        {/* Nav links */}
         <nav aria-label="Primary navigation">
           <ul className="flex items-center gap-1" role="list">
             {NAV.map(({ href, label, hi }) => {
@@ -156,17 +143,17 @@ function Header() {
                     className={[
                       "relative flex flex-col items-center px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 group",
                       active
-                        ? "text-gold bg-white/10"
-                        : "text-white/80 hover:text-white hover:bg-white/10",
+                        ? "text-primary bg-primary/5"
+                        : "text-navy/70 hover:text-navy hover:bg-gray-50",
                     ].join(" ")}
                   >
                     <span>{label}</span>
-                    <span className="font-hindi text-[10px] leading-none mt-0.5 opacity-70">
+                    <span className="font-hindi text-[10px] leading-none mt-0.5 opacity-60">
                       {hi}
                     </span>
                     {active && (
                       <span
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-gold"
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-primary"
                         aria-hidden="true"
                       />
                     )}
@@ -177,7 +164,6 @@ function Header() {
           </ul>
         </nav>
 
-        {/* CTA / User Avatar */}
         {authUser ? (
           <div className="relative flex-shrink-0">
             <button
@@ -185,16 +171,16 @@ function Header() {
                 e.stopPropagation();
                 setUserDropdown((o) => !o);
               }}
-              className="flex items-center gap-2.5 bg-white/10 hover:bg-white/20 rounded-xl px-3 py-2 transition-all duration-200"
+              className="flex items-center gap-2.5 bg-navy/5 hover:bg-navy/10 rounded-xl px-3 py-2 transition-all duration-200"
             >
-              <div className="w-8 h-8 rounded-full bg-gold text-temple-brown flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
                 {initial}
               </div>
               <div className="text-left hidden xl:block">
-                <p className="text-white text-xs font-semibold leading-tight truncate max-w-[120px]">
+                <p className="text-navy text-xs font-semibold leading-tight truncate max-w-[120px]">
                   {authUser.name || authUser.mobile}
                 </p>
-                <p className="text-gold/70 text-[10px] leading-tight">
+                <p className="text-primary/60 text-[10px] leading-tight">
                   {authUser.role}
                 </p>
               </div>
@@ -203,7 +189,7 @@ function Header() {
             {userDropdown && (
               <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
                 <div className="px-4 py-3 border-b border-gray-100">
-                  <p className="text-sm font-semibold text-gray-800 truncate">
+                  <p className="text-sm font-semibold text-navy truncate">
                     {authUser.name || "User"}
                   </p>
                   <p className="text-xs text-gray-400">{authUser.mobile}</p>
@@ -214,7 +200,7 @@ function Header() {
                   className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   {authUser.role === "ADMIN" ? (
-                    <Shield size={15} className="text-maroon" />
+                    <Shield size={15} className="text-primary" />
                   ) : authUser.role === "TEAM" ? (
                     <Users size={15} className="text-blue-600" />
                   ) : (
@@ -251,52 +237,51 @@ function Header() {
         ) : (
           <Link
             href="/register"
-            className="flex-shrink-0 bg-gold hover:bg-yellow-500 text-temple-brown font-bold text-sm px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-md shadow-black/20 whitespace-nowrap"
+            className="flex-shrink-0 bg-primary hover:bg-primary-dark text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-md shadow-primary/20 whitespace-nowrap"
           >
             Register Now
           </Link>
         )}
       </div>
 
-      {/* ── Mobile header ────────────────────────────────────────── */}
+      {/* Mobile header */}
       <div className="flex lg:hidden items-center justify-between px-4 py-3">
-        {/* Logo */}
         <Link
           href="/"
           onClick={closeMenu}
           className="flex items-center gap-2.5"
-          aria-label="Home — Mandir"
+          aria-label="Home — TheMarriageHome.com"
         >
           <Image
-            className="size-7 mx-auto"
-            src={"/icons/om-icon-v2.png"}
-            width={28}
-            height={28}
-            alt="om-logo"
+            src="/icons/marriagehome-logo.png"
+            width={36}
+            height={36}
+            alt="TheMarriageHome.com"
+            className="h-9 w-auto"
+            unoptimized
           />
           <div className="leading-tight">
-            <p className="font-bold text-white text-xs tracking-wide">
-              {TEMPLE.name}
+            <p className="font-bold text-navy text-xs tracking-wide">
+              {SITE.name}<span className="text-primary">{SITE.domain}</span>
             </p>
-            <p className="font-hindi text-gold text-[10px] mt-0.5">
-              {TEMPLE.nameHi}
+            <p className="text-gold text-[9px] mt-0.5 font-medium">
+              {SITE.tagline}
             </p>
           </div>
         </Link>
 
-        {/* Hamburger */}
         <button
           onClick={() => setMenuOpen((o) => !o)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="text-white/80 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10"
+          className="text-navy/60 hover:text-navy transition-colors p-1.5 rounded-lg hover:bg-gray-50"
         >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {/* ── Mobile slide-down menu ────────────────────────────────── */}
+      {/* Mobile slide-down menu */}
       <div
         id="mobile-menu"
         role="navigation"
@@ -306,7 +291,7 @@ function Header() {
           menuOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
-        <div className="border-t border-gold/20 px-4 pb-4 pt-2 bg-gradient-to-b from-maroon-dark/80 to-maroon-dark">
+        <div className="border-t border-gray-100 px-4 pb-4 pt-2 bg-white">
           <ul className="space-y-0.5" role="list">
             {NAV.map(({ href, label, hi }) => {
               const active = isActive(href);
@@ -319,15 +304,15 @@ function Header() {
                     className={[
                       "flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200",
                       active
-                        ? "bg-gold text-temple-brown font-bold"
-                        : "text-white/80 hover:text-white hover:bg-white/10",
+                        ? "bg-primary text-white font-bold"
+                        : "text-navy/70 hover:text-navy hover:bg-gray-50",
                     ].join(" ")}
                   >
                     <span>{label}</span>
                     <span
                       className={[
                         "font-hindi text-xs",
-                        active ? "text-temple-brown/80" : "text-gold/70",
+                        active ? "text-white/80" : "text-primary/60",
                       ].join(" ")}
                     >
                       {hi}
@@ -338,25 +323,24 @@ function Header() {
             })}
           </ul>
 
-          {/* Mobile CTA / User info */}
-          <div className="mt-3 pt-3 border-t border-gold/20">
+          <div className="mt-3 pt-3 border-t border-gray-100">
             {authUser ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-3 px-4 py-2">
-                  <div className="w-9 h-9 rounded-full bg-gold text-temple-brown flex items-center justify-center font-bold text-sm">
+                  <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
                     {initial}
                   </div>
                   <div>
-                    <p className="text-white text-sm font-semibold">
+                    <p className="text-navy text-sm font-semibold">
                       {authUser.name || authUser.mobile}
                     </p>
-                    <p className="text-gold/60 text-xs">{authUser.role}</p>
+                    <p className="text-primary/50 text-xs">{authUser.role}</p>
                   </div>
                 </div>
                 <Link
                   href={dashboardHref}
                   onClick={closeMenu}
-                  className="flex items-center justify-center w-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-5 py-3 rounded-xl transition-all"
+                  className="flex items-center justify-center w-full bg-navy/5 hover:bg-navy/10 text-navy font-semibold text-sm px-5 py-3 rounded-xl transition-all"
                 >
                   {authUser.role === "ADMIN"
                     ? "Admin Panel"
@@ -371,7 +355,7 @@ function Header() {
                     handleLogout();
                     closeMenu();
                   }}
-                  className="flex items-center justify-center gap-2 w-full text-red-400 hover:text-red-300 text-sm py-2 transition-colors"
+                  className="flex items-center justify-center gap-2 w-full text-red-500 hover:text-red-600 text-sm py-2 transition-colors"
                 >
                   <LogOut size={14} /> Logout
                 </button>
@@ -380,9 +364,9 @@ function Header() {
               <Link
                 href="/register"
                 onClick={closeMenu}
-                className="flex items-center justify-center w-full bg-gold hover:bg-yellow-500 text-temple-brown font-bold text-sm px-5 py-3 rounded-xl transition-all duration-200"
+                className="flex items-center justify-center w-full bg-primary hover:bg-primary-dark text-white font-bold text-sm px-5 py-3 rounded-xl transition-all duration-200"
               >
-                Register Now — विवाह पंजीकरण
+                Register Now
               </Link>
             )}
           </div>
@@ -392,8 +376,6 @@ function Header() {
   );
 }
 
-// ─── Floating Buttons ─────────────────────────────────────────────────────────
-
 function FloatingButtons() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -402,7 +384,6 @@ function FloatingButtons() {
       setShowScrollTop(window.scrollY > 400);
     }
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Run once on mount in case the page starts scrolled
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -416,12 +397,11 @@ function FloatingButtons() {
       className="fixed bottom-6 right-5 z-50 flex flex-col items-center gap-3"
       aria-label="Quick actions"
     >
-      {/* Scroll-to-top — visible only after 400 px of scroll */}
       <button
         onClick={scrollToTop}
         aria-label="Scroll to top"
         className={[
-          "w-11 h-11 rounded-full bg-maroon hover:bg-maroon-dark text-white flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-300",
+          "w-11 h-11 rounded-full bg-navy hover:bg-navy-dark text-white flex items-center justify-center shadow-lg transition-all duration-300",
           showScrollTop
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none",
@@ -430,27 +410,25 @@ function FloatingButtons() {
         <ArrowUp size={18} />
       </button>
 
-      {/* Phone call */}
       <div className="flex flex-col gap-3">
         {PHONE_NUMBERS.map((num) => (
           <a
             key={num}
             href={telHref(num)}
-            aria-label={`Call temple: +91 ${num}`}
-            className="w-11 h-11 rounded-full bg-green-600 hover:bg-green-700 text-white flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-200 hover:-translate-y-0.5"
+            aria-label={`Call: +91 ${num}`}
+            className="w-11 h-11 rounded-full bg-green-600 hover:bg-green-700 text-white flex items-center justify-center shadow-lg transition-all duration-200 hover:-translate-y-0.5"
           >
             <Phone size={18} />
           </a>
         ))}
       </div>
 
-      {/* WhatsApp */}
       <a
         href={waHref(PHONE_NUMBERS[0])}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="w-11 h-11 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-200 hover:-translate-y-0.5"
+        className="w-11 h-11 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center shadow-lg transition-all duration-200 hover:-translate-y-0.5"
       >
         <MessageCircle size={18} />
       </a>
@@ -458,41 +436,39 @@ function FloatingButtons() {
   );
 }
 
-// ─── Footer ───────────────────────────────────────────────────────────────────
-
 function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-br from-[#1a0505] to-[#2A0808] text-white/70">
-      {/* ── 4-column grid ─────────────────────────────────────────── */}
+    <footer className="bg-navy text-white/70">
       <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        {/* Col 1 — Temple identity */}
+        {/* Col 1 — Brand */}
         <div className="space-y-3">
-          <Link href="/" >
-          <div className="flex items-center gap-2.5">
-            <Image
-              className="size-8"
-              src={"/icons/om-icon-v2.png"}
-              width={32}
-              height={32}
-              alt="om-logo"
-            />
-            <div>
-              <p className="font-bold text-white text-sm leading-snug">
-                {TEMPLE.name}
-              </p>
+          <Link href="/">
+            <div className="flex items-center gap-2.5">
+              <Image
+                src="/icons/marriagehome-logo.png"
+                width={40}
+                height={40}
+                alt="TheMarriageHome.com"
+                className="h-10 w-auto"
+                unoptimized
+              />
+              <div>
+                <p className="font-bold text-white text-sm leading-snug">
+                  {SITE.name}<span className="text-primary">{SITE.domain}</span>
+                </p>
+              </div>
             </div>
-          </div>
           </Link>
-          <p className="font-hindi text-gold text-base leading-snug">
-            {TEMPLE.nameHi}
+          <p className="text-gold text-sm leading-snug font-medium">
+            {SITE.tagline}
           </p>
-          <p className="font-hindi text-gold-light/80 text-sm leading-snug">
-            {TEMPLE.taglineHi}
+          <p className="font-hindi text-gold/80 text-sm leading-snug">
+            {SITE.taglineHi}
           </p>
-          <p className="text-xs text-white/50 leading-relaxed">
-            {TEMPLE.committee}
+          <p className="text-xs text-white/40 leading-relaxed">
+            Premium matrimony platform trusted by thousands of families.
           </p>
         </div>
 
@@ -521,27 +497,14 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Col 3 — Address */}
+        {/* Col 3 — Contact */}
         <div className="space-y-3">
           <h3 className="font-bold text-white text-sm tracking-wide uppercase">
-            Temple Address
+            Contact Us
           </h3>
-          <address className="not-italic space-y-2 text-sm text-white/60 leading-relaxed">
-            <p>
-              Mandir
-              <br />
-              Geeta Colony, Ram Lila Ground Chowk, East Delhi — 110031
-            </p>
-          </address>
-          <a
-            href={TEMPLE.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-gold hover:text-yellow-400 transition-colors duration-200 mt-1"
-          >
-            <span>View on Google Maps</span>
-            <span aria-hidden="true">↗</span>
-          </a>
+          <div className="space-y-2 text-sm text-white/60">
+            <p>TheMarriageHome.com</p>
+          </div>
           <div className="pt-1 space-y-1">
             {PHONE_NUMBERS.map((num) => (
               <a
@@ -553,53 +516,47 @@ function Footer() {
               </a>
             ))}
             <a
-              href={`mailto:${TEMPLE.email}`}
+              href={`mailto:${SITE.email}`}
               className="block text-xs text-white/50 hover:text-gold/80 transition-colors duration-200 break-all"
             >
-              {TEMPLE.email}
+              {SITE.email}
             </a>
           </div>
         </div>
 
-        {/* Col 4 — Temple timings */}
+        {/* Col 4 — Services */}
         <div className="space-y-3">
           <h3 className="font-bold text-white text-sm tracking-wide uppercase">
-            Temple Timings
+            Our Services
           </h3>
-          <div className="space-y-4 text-sm">
+          <div className="space-y-3 text-sm">
             <div className="space-y-1.5">
-              <p className="text-gold font-semibold">Morning Session</p>
-              <p className="text-white/60">5:00 AM – 12:00 PM</p>
-              <p className="font-hindi text-white/40 text-xs">प्रातः काल</p>
+              <p className="text-gold font-semibold">Profile Registration</p>
+              <p className="text-white/60">Create detailed matrimonial profiles</p>
             </div>
             <div className="space-y-1.5">
-              <p className="text-gold font-semibold">Evening Session</p>
-              <p className="text-white/60">4:00 PM – 9:30 PM</p>
-              <p className="font-hindi text-white/40 text-xs">सायं काल</p>
+              <p className="text-gold font-semibold">Smart Search</p>
+              <p className="text-white/60">Find compatible matches easily</p>
             </div>
             <div className="space-y-1.5">
-              <p className="text-gold font-semibold">Aarti Times</p>
-              <p className="text-white/60">6:30 AM &amp; 7:30 PM</p>
-              <p className="font-hindi text-white/40 text-xs">आरती समय</p>
+              <p className="text-gold font-semibold">Verified Profiles</p>
+              <p className="text-white/60">Trusted & genuine connections</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Bottom bar ────────────────────────────────────────────── */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/40">
           <p>
-            &copy; {currentYear} RishteNate. {TEMPLE.committee}
+            &copy; {currentYear} TheMarriageHome.com. All rights reserved.
           </p>
-          <p className="font-hindi text-gold/60 text-sm">।। जय श्री राम ।।</p>
+          <p className="text-gold/60 text-sm font-medium">Find Your Forever Home</p>
         </div>
       </div>
     </footer>
   );
 }
-
-// ─── Public Layout ────────────────────────────────────────────────────────────
 
 export default function PublicLayout({
   children,

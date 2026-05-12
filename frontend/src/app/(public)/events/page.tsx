@@ -4,7 +4,7 @@ import { Calendar } from "lucide-react";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: `Temple Events - Mandir`,
+  title: `Events - TheMarriageHome.com`,
 };
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -83,7 +83,7 @@ export default function EventsPage() {
           <Link href={"/"}>
             <Image
               className="size-12 mx-auto"
-              src={"/icons/om-icon-v2.png"}
+              src="/icons/marriagehome-logo.png"
               width={40}
               height={40}
               alt="om-logo"
@@ -96,8 +96,8 @@ export default function EventsPage() {
             Temple Events
           </h1>
           <p className="text-white/70 text-base max-w-lg mx-auto leading-relaxed">
-            Join us for spiritual gatherings, celebrations, and community
-            services at Mandir throughout the year.
+            Join us for gatherings, celebrations, and community
+            events organized by TheMarriageHome.com throughout the year.
           </p>
         </div>
       </section>

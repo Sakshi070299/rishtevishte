@@ -2,56 +2,52 @@ import type { Metadata } from 'next';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Mandir',
+  title: 'Contact Us - TheMarriageHome.com',
 };
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const MAPS_URL =
-  'https://maps.google.com/?q=Hanuman+Murti+Geeta+Colony+Delhi';
+  'https://maps.google.com/?q=TheMarriageHome+Delhi+India';
 
 const INFO_ITEMS = [
   {
     icon: MapPin,
     label: 'Address',
-    labelHi: 'पता',
     content: [
-      'Mandir,',
-      'Geeta Colony, Ram Lila Ground Chowk,',
-      'East Delhi — 110031',
+      'TheMarriageHome.com,',
+      'New Delhi,',
+      'India — 110001',
     ],
   },
   {
     icon: Phone,
     label: 'Phone',
-    labelHi: 'फोन',
     content: ['9810277873', '9899957029'],
   },
   {
     icon: Mail,
     label: 'Email',
-    labelHi: 'ईमेल',
-    content: ['hanumanmandirgeetacolony@gmail.com'],
-    href: 'mailto:hanumanmandirgeetacolony@gmail.com',
+    content: ['support@themarriagehome.com'],
+    href: 'mailto:support@themarriagehome.com',
   },
   {
     icon: Clock,
-    label: 'Timings',
-    labelHi: 'समय',
+    label: 'Support Hours',
     content: [
-      'Morning: 5:00 AM – 12:00 PM',
-      'Evening: 4:00 PM – 9:30 PM',
+      'Monday – Saturday: 9:00 AM – 7:00 PM',
+      'Sunday: 10:00 AM – 4:00 PM',
     ],
   },
 ] as const;
 
 const SCHEDULE: [string, string][] = [
-  ['5:00 AM', 'Temple Opens / मंदिर खुलना'],
-  ['6:30 AM', 'Mangal Aarti / मंगल आरती'],
-  ['12:00 PM', 'Afternoon Break / दोपहर विश्राम'],
-  ['4:00 PM', 'Temple Reopens / पुनः खुलना'],
-  ['7:30 PM', 'Sandhya Aarti / संध्या आरती'],
-  ['9:30 PM', 'Temple Closes / मंदिर बंद'],
+  ['9:00 AM', 'Phone support opens'],
+  ['10:00 AM', 'Walk-in consultations begin'],
+  ['1:00 PM', 'Afternoon break'],
+  ['2:00 PM', 'Consultations resume'],
+  ['5:00 PM', 'Last walk-in slot'],
+  ['7:00 PM', 'Office closes'],
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -69,21 +65,17 @@ export default function ContactPage() {
           aria-hidden="true"
         />
         <div className="relative z-10 max-w-2xl mx-auto">
-          <p
-            className="font-hindi text-[#D4A017] text-4xl mb-3 select-none"
-            aria-hidden="true"
-          >
-            ॐ
-          </p>
-          <p className="font-hindi text-[#F5E6B8] text-2xl md:text-3xl mb-2">
-            संपर्क करें
-          </p>
+          <img
+            src="/icons/marriagehome-logo.png"
+            alt="TheMarriageHome.com logo"
+            className="mx-auto h-12 w-12 mb-3"
+          />
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
             Contact Us
           </h1>
           <p className="text-white/70 text-base max-w-lg mx-auto leading-relaxed">
-            Visit us, call, or write — we are here to serve the community with
-            devotion.
+            Reach out to us — we are here to help you find your perfect life
+            partner.
           </p>
         </div>
       </section>
@@ -94,16 +86,16 @@ export default function ContactPage() {
         aria-label="Contact information"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* ── LEFT: Temple Information ──────────────────────────────── */}
+          {/* ── LEFT: Contact Information ──────────────────────────────── */}
           <div>
             <div className="bg-white border border-[#E8D5C4] rounded-2xl shadow-sm overflow-hidden">
               {/* Card header */}
               <div className="bg-gradient-to-r from-[#8B1A1A] to-[#5a0f0f] px-6 py-4">
                 <h2 className="text-white font-bold text-lg">
-                  Temple Information
+                  Contact Information
                 </h2>
-                <p className="font-hindi text-[#F5E6B8] text-sm mt-0.5">
-                  मंदिर की जानकारी
+                <p className="text-[#F5E6B8] text-sm mt-0.5">
+                  Get in touch with our team
                 </p>
               </div>
 
@@ -129,9 +121,6 @@ export default function ContactPage() {
                       <div className="min-w-0">
                         <p className="font-semibold text-[#8B1A1A] text-sm">
                           {item.label}
-                          <span className="font-hindi text-[#D4A017] text-xs ml-2 font-normal">
-                            {item.labelHi}
-                          </span>
                         </p>
                         {item.label === 'Phone' ? (
                           <div className="space-y-1">
@@ -197,8 +186,8 @@ export default function ContactPage() {
                   <p className="font-bold text-[#8B1A1A] text-base">
                     Google Map
                   </p>
-                  <p className="font-hindi text-[#3D1F0B]/60 text-sm mt-0.5">
-                    स्थान देखें
+                  <p className="text-[#3D1F0B]/60 text-sm mt-0.5">
+                    View our location
                   </p>
                 </div>
               </div>
@@ -206,14 +195,14 @@ export default function ContactPage() {
               {/* Card footer */}
               <div className="px-5 py-4 border-t border-[#F5E6B8] flex items-center justify-between gap-3 flex-wrap">
                 <p className="text-[#3D1F0B]/60 text-xs leading-relaxed max-w-[220px]">
-                  Mandir, Geeta Colony, Ram Lila Ground Chowk, East Delhi — 110031
+                  TheMarriageHome.com, New Delhi, India — 110001
                 </p>
                 <a
                   href={MAPS_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-shrink-0 inline-flex items-center gap-1.5 bg-[#8B1A1A] hover:bg-[#5a0f0f] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-sm shadow-[#8B1A1A]/30"
-                  aria-label="Open temple location in Google Maps (opens in new tab)"
+                  aria-label="Open office location in Google Maps (opens in new tab)"
                 >
                   Open in Google Maps
                   <span aria-hidden="true">→</span>
@@ -221,20 +210,20 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Daily Schedule card */}
+            {/* Office Hours card */}
             <div className="bg-white border border-[#E8D5C4] rounded-2xl shadow-sm overflow-hidden">
               {/* Card header */}
               <div className="bg-gradient-to-r from-[#D4A017] to-[#b8860b] px-6 py-4">
                 <h2 className="text-[#3D1F0B] font-bold text-lg">
-                  Daily Schedule
+                  Office Hours
                 </h2>
-                <p className="font-hindi text-[#3D1F0B]/70 text-sm mt-0.5">
-                  दैनिक कार्यक्रम
+                <p className="text-[#3D1F0B]/70 text-sm mt-0.5">
+                  Walk-in &amp; phone support schedule
                 </p>
               </div>
 
               {/* Schedule table */}
-              <table className="w-full" aria-label="Daily temple schedule">
+              <table className="w-full" aria-label="Office hours schedule">
                 <thead className="sr-only">
                   <tr>
                     <th scope="col">Time</th>
@@ -242,21 +231,19 @@ export default function ContactPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#F5E6B8]">
-                  {SCHEDULE.map(([time, activity], index) => {
-                    // Highlight aarti rows
-                    const isAarti =
-                      activity.toLowerCase().includes('aarti') ||
-                      activity.toLowerCase().includes('आरती');
+                  {SCHEDULE.map(([time, activity]) => {
+                    const isHighlight =
+                      activity.toLowerCase().includes('consultation');
                     const isBreak =
                       activity.toLowerCase().includes('break') ||
-                      activity.toLowerCase().includes('बंद');
+                      activity.toLowerCase().includes('closes');
 
                     return (
                       <tr
                         key={time}
                         className={[
                           'transition-colors',
-                          isAarti
+                          isHighlight
                             ? 'bg-[#FFFAF5]'
                             : isBreak
                               ? 'bg-[#f9f9f9]'
@@ -268,7 +255,7 @@ export default function ContactPage() {
                           <span
                             className={[
                               'inline-block text-xs font-bold px-2 py-1 rounded-lg',
-                              isAarti
+                              isHighlight
                                 ? 'bg-[#F5E6B8] text-[#8B1A1A]'
                                 : isBreak
                                   ? 'bg-[#f0f0f0] text-[#3D1F0B]/50'
@@ -289,29 +276,8 @@ export default function ContactPage() {
                                 : 'text-[#3D1F0B]',
                             ].join(' ')}
                           >
-                            {/* Split on " / " to render Hindi part with font-hindi */}
-                            {activity.includes(' / ') ? (
-                              <>
-                                <span>{activity.split(' / ')[0]}</span>
-                                <span
-                                  className="font-hindi text-[#D4A017] text-xs ml-1"
-                                  aria-hidden="true"
-                                >
-                                  / {activity.split(' / ')[1]}
-                                </span>
-                              </>
-                            ) : (
-                              activity
-                            )}
+                            {activity}
                           </p>
-                          {isAarti && (
-                            <p
-                              className="text-[10px] text-[#8B1A1A]/60 mt-0.5"
-                              aria-hidden="true"
-                            >
-                              Special darshan
-                            </p>
-                          )}
                         </td>
                       </tr>
                     );
@@ -322,16 +288,13 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* ── Bottom devotional strip ──────────────────────────────────── */}
+        {/* ── Bottom strip ──────────────────────────────────────────────── */}
         <div className="mt-10 bg-gradient-to-r from-[#8B1A1A] to-[#5a0f0f] text-white rounded-2xl px-8 py-8 text-center shadow-lg">
-          <p className="font-hindi text-[#F5E6B8] text-xl mb-1">
-            ।। जय श्री राम ।।
+          <p className="text-[#F5E6B8] text-xl font-semibold mb-1">
+            TheMarriageHome.com
           </p>
           <p className="text-white/60 text-sm">
-            Managed by{' '}
-            <span className="text-white/90 font-medium">
-              Geeta Colony Dharmik Ramlila Committee (Reg. 1962).
-            </span>
+            Your trusted partner in finding meaningful, lifelong connections.
           </p>
         </div>
       </section>

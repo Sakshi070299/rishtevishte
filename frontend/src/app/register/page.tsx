@@ -1056,7 +1056,7 @@ function RegisterPageContent() {
         key: order.key,
         amount: order.amount * 100,
         currency: order.currency,
-        name: "Mandir",
+        name: "TheMarriageHome.com",
         description: `Registration Fee — ${regNumber}`,
         order_id: order.orderId,
         handler: async (response: RazorpayResponse) => {
@@ -1071,7 +1071,7 @@ function RegisterPageContent() {
             router.push(`/success?regId=${regNumber}`);
           } catch {
             toast.error(
-              "Payment verification failed. Please contact the temple office.",
+              "Payment verification failed. Please contact TheMarriageHome.com support.",
             );
             router.push("/profiles");
           }
@@ -1219,7 +1219,7 @@ function RegisterPageContent() {
             {canManageInternalRef && (
               <FormInput
                 key="internalRegistrationNo"
-                label="Temple / Offline Registration No"
+                label="Offline Registration No"
                 hi="आंतरिक पंजीकरण क्रमांक"
                 name="internalRegistrationNo"
                 ph="Internal reference (staff only)"

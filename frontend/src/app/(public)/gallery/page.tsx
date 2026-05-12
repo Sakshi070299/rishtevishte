@@ -165,7 +165,7 @@ export default function GalleryPage() {
           <Link href={"/"} >
             <Image
               className="size-12 mx-auto"
-              src={"/icons/om-icon-v2.png"}
+              src="/icons/marriagehome-logo.png"
               width={40}
               height={40}
               alt="om-logo"
@@ -178,8 +178,8 @@ export default function GalleryPage() {
             Temple Gallery
           </h1>
           <p className="text-white/70 text-base max-w-lg mx-auto leading-relaxed">
-            A glimpse into the divine beauty of Mandir and
-            our vibrant community celebrations.
+            A glimpse into our vibrant community events and
+            memorable celebrations.
           </p>
         </div>
       </section>

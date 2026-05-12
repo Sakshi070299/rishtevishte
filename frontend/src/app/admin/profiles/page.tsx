@@ -989,6 +989,7 @@ export default function AdminProfilesPage() {
         <ViewModal
           profile={viewProfile}
           onClose={() => setViewProfile(null)}
+          showContactDetails={true}
         />
       )}
 

@@ -344,8 +344,8 @@ export default function DonationPage() {
         key: order.key,
         amount: order.amount * 100,
         currency: order.currency,
-        name: "Mandir",
-        description: "Temple Donation — RishteNate",
+        name: "TheMarriageHome.com",
+        description: "Donation — TheMarriageHome.com",
         order_id: order.orderId,
         handler: async (response: RazorpayResponse) => {
           try {
@@ -366,7 +366,7 @@ export default function DonationPage() {
             setRefreshKey((k) => k + 1);
           } catch {
             toast.error(
-              "Payment verification failed. Please contact the temple office.",
+              "Payment verification failed. Please contact support.",
             );
           }
         },
@@ -409,18 +409,18 @@ export default function DonationPage() {
           <Link href={"/"}>
             <Image
               className="size-12"
-              src={"/icons/om-icon-v2.png"}
+              src="/icons/marriagehome-logo.png"
               width={40}
               height={40}
               alt="om-logo"
             />
           </Link>
         </div>
-        <h2 className="text-2xl font-bold text-maroon mb-1">Temple Donation</h2>
-        <p className="font-hindi text-primary mb-2">मंदिर में दान करें</p>
+        <h2 className="text-2xl font-bold text-maroon mb-1">Support Us</h2>
+        <p className="font-hindi text-primary mb-2">सहयोग करें</p>
         <p className="text-sm text-temple-brown-light mb-8">
-          Your donations help maintain the temple, support community services,
-          and organize spiritual events.
+          Your donations help maintain the platform, support community services,
+          and organize events.
         </p>
 
         <div className="flex gap-3 justify-center flex-wrap mb-6">

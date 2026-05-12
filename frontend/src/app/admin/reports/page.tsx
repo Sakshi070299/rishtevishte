@@ -137,7 +137,7 @@ function downloadReportCsv(
   period: Period,
 ) {
   const lines = [
-    `RishteNate - ${PERIOD_LABELS[period]} Report`,
+    `TheMarriageHome.com - ${PERIOD_LABELS[period]} Report`,
     '',
     'Registration Stats',
     `Total,${regReport.total}`,

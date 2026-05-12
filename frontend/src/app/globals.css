@@ -21,21 +21,21 @@
            transition-all duration-300 inline-flex items-center gap-2;
   }
   .btn-outline {
-    @apply border-2 border-maroon text-maroon px-6 py-3 rounded-xl font-semibold
-           hover:bg-maroon hover:text-white transition-all duration-300
+    @apply border-2 border-navy text-navy px-6 py-3 rounded-xl font-semibold
+           hover:bg-navy hover:text-white transition-all duration-300
            inline-flex items-center gap-2;
   }
   .btn-gold {
-    @apply bg-gold text-temple-brown px-6 py-3 rounded-xl font-semibold
-           hover:bg-yellow-600 hover:-translate-y-0.5
+    @apply bg-gold text-white px-6 py-3 rounded-xl font-semibold
+           hover:bg-gold-dark hover:-translate-y-0.5
            transition-all duration-300 inline-flex items-center gap-2;
   }
   .card-temple {
-    @apply bg-white rounded-xl p-6 shadow-md border border-[#E8D5C4]
+    @apply bg-white rounded-xl p-6 shadow-md border border-gray-200
            hover:shadow-lg hover:-translate-y-1 transition-all duration-300;
   }
   .input-field {
-    @apply w-full px-3 py-2.5 border-[1.5px] border-[#E8D5C4] rounded-lg text-sm
+    @apply w-full px-3 py-2.5 border-[1.5px] border-gray-200 rounded-lg text-sm
            font-sans bg-white text-temple-brown
            focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10
            transition-all duration-200;
@@ -44,7 +44,7 @@
     @apply border-red-500 ring-2 ring-red-500/10;
   }
   .page-hero {
-    @apply bg-gradient-to-br from-maroon to-maroon-dark text-white text-center py-12 px-6;
+    @apply bg-gradient-to-br from-navy to-navy-dark text-white text-center py-12 px-6;
   }
   .section-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 py-16;

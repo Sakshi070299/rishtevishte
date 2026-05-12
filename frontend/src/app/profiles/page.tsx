@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { profilesApi, donationsApi, resolvePhotoUrl } from "@/lib/api";
 import type { Profile } from "@/types";
-import { downloadBiodata, printCard } from "@/lib/download-biodata";
+import { downloadBiodata } from "@/lib/download-biodata";
 import { formatDate } from "date-fns";
 import { ViewModal } from "@/components/ViewModal";
 
@@ -153,7 +153,7 @@ export default function ProfilesPage() {
         key: order.key,
         amount: order.amount * 100,
         currency: order.currency,
-        name: "Mandir",
+        name: "TheMarriageHome.com",
         description: `Registration Fee — ${profile.registrationNumber}`,
         order_id: order.orderId,
         handler: async (response: RazorpayResponse) => {
@@ -173,7 +173,7 @@ export default function ProfilesPage() {
             router.push(`/success?regId=${profile.registrationNumber}`);
           } catch {
             toast.error(
-              "Payment verification failed. Please contact the temple office.",
+              "Payment verification failed. Please contact support.",
             );
           }
         },
@@ -181,7 +181,7 @@ export default function ProfilesPage() {
           contact: profile.guardianPhone || undefined,
           email: profile.guardianEmail || undefined,
         },
-        theme: { color: "#8B1A1A" },
+        theme: { color: "#1B2A4A" },
         modal: {
           ondismiss: () => {
             toast.info("Payment cancelled.");
@@ -369,14 +369,6 @@ export default function ProfilesPage() {
                 )}
                 {profile.status === "ACTIVE" && (
                   <button
-                    onClick={() => printCard(profile)}
-                    className="text-xs px-3 py-1.5 rounded-lg bg-maroon/10 text-maroon font-medium hover:bg-maroon/20 flex items-center gap-1"
-                  >
-                    <Printer size={12} /> Print Card
-                  </button>
-                )}
-                {profile.status === "ACTIVE" && (
-                  <button
                     onClick={() => handleSettle(profile.id)}
                     className="text-xs px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 font-medium hover:bg-red-500/20 flex items-center gap-1 sm:ml-auto"
                   >
@@ -391,7 +383,7 @@ export default function ProfilesPage() {
 
       {/* View Modal */}
       {viewProfile && (
-        <ViewModal profile={viewProfile} onClose={() => setViewProfile(null)} />
+        <ViewModal profile={viewProfile} onClose={() => setViewProfile(null)} showContactDetails={true} />
       )}
     </>
   );

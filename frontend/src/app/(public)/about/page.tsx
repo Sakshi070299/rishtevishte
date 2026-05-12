@@ -3,35 +3,35 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Temple - Mandir",
+  title: "About Us - TheMarriageHome.com",
 };
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const BLOCKS = [
   {
-    icon: "🛕",
-    title: "Temple History",
-    hi: "मंदिर का इतिहास",
-    text: "Mandir is one of the most revered temples in Geeta Colony, East Delhi. The temple gained nationwide attention with its magnificent 51-foot tall Hanuman Ji idol inaugurated on January 22, 2024 — the historic day of Ram Mandir Pran Pratishtha in Ayodhya.",
+    icon: "💍",
+    title: "Our Story",
+    hi: "हमारी कहानी",
+    text: "TheMarriageHome.com is a premium matrimony platform built on trust, tradition, and technology. We connect families seeking meaningful, lifelong partnerships with verified profiles and a commitment to cultural values.",
   },
   {
-    icon: "🙏",
-    title: "Significance of Hanuman Ji",
-    hi: "हनुमान जी का महत्व",
-    text: "Lord Hanuman is revered as the embodiment of devotion, strength, courage, and selfless service. Known as Sankat Mochan — the remover of difficulties — Hanuman Ji blesses devotees with fearlessness and spiritual strength.",
+    icon: "✅",
+    title: "Trust & Verification",
+    hi: "विश्वास और सत्यापन",
+    text: "Every profile on TheMarriageHome.com goes through a thorough verification process. We believe trust is the foundation of every successful match, and our dedicated team ensures authenticity at every step.",
   },
   {
     icon: "👥",
-    title: "Temple Committee",
-    hi: "मंदिर समिति",
-    text: "Managed by Geeta Colony Dharmik Ramlila Committee, a dedicated group of community volunteers maintaining the temple, organizing Ramleela, and facilitating community services including matrimony.",
+    title: "Our Team",
+    hi: "हमारी टीम",
+    text: "Our team of experienced matchmaking professionals and technology experts work together to deliver a seamless, secure, and personalized matrimony experience for families across India.",
   },
   {
     icon: "🤝",
-    title: "Community Services",
-    hi: "सामुदायिक सेवाएं",
-    text: "Regular Bhandara on Purnima, educational support, health camps, trusted matrimony services, and major festivals like 9-day Ramleela, Hanuman Jayanti, Ram Navami, and weekly Satsang.",
+    title: "Community & Values",
+    hi: "समुदाय और मूल्य",
+    text: "We honour Indian traditions while embracing modern convenience. From personalised matchmaking support to community events, we go beyond profiles to help families find the perfect match.",
   },
 ];
 
@@ -52,33 +52,29 @@ export default function AboutPage() {
         />
 
         <div className="relative z-10 max-w-2xl mx-auto">
-          {/* Om symbol */}
           <Link href={"/"}>
             <Image
               className="size-12 mx-auto"
-              src={"/icons/om-icon-v2.png"}
+              src={"/icons/marriagehome-logo.png"}
               width={40}
               height={40}
-              alt="om-logo"
+              alt="TheMarriageHome.com logo"
             />
           </Link>
-          {/* Hindi heading */}
           <p className="font-hindi text-[#F5E6B8] text-2xl md:text-3xl mb-2 mt-3">
-            मंदिर के बारे में
+            हमारे बारे में
           </p>
 
-          {/* English heading */}
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
-            About the Temple
+            About TheMarriageHome.com
           </h1>
 
-          {/* Subtitle */}
           <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-            Discover the history, significance, and community spirit of{" "}
+            Discover the story, values, and mission behind{" "}
             <span className="text-[#F5E6B8] font-medium">
-              Mandir
+              TheMarriageHome.com
             </span>
-            , Geeta Colony, East Delhi.
+            — India&apos;s premium matrimony platform.
           </p>
         </div>
       </section>
@@ -86,7 +82,7 @@ export default function AboutPage() {
       {/* ── Content Blocks ────────────────────────────────────────────── */}
       <section
         className="max-w-4xl mx-auto px-4 sm:px-6 py-14"
-        aria-label="Temple information"
+        aria-label="Platform information"
       >
         <div className="space-y-6">
           {BLOCKS.map((block) => (
@@ -118,14 +114,14 @@ export default function AboutPage() {
         {/* ── CTA strip ─────────────────────────────────────────────── */}
         <div className="mt-12 rounded-2xl bg-gradient-to-r from-[#8B1A1A] to-[#5a0f0f] text-white px-8 py-10 text-center shadow-lg">
           <p className="font-hindi text-[#F5E6B8] text-xl mb-2">
-            रिश्तेसेतु में पंजीकरण करें
+            TheMarriageHome.com पर पंजीकरण करें
           </p>
           <h3 className="text-2xl font-bold mb-3">
-            Register for Temple Matrimony
+            Register on Our Premium Matrimony Platform
           </h3>
           <p className="text-white/70 text-sm mb-6 max-w-md mx-auto">
-            With the blessings of Hanuman Ji, find your life partner through our
-            trusted temple community platform.
+            Find your life partner through our trusted, verified, and
+            family-friendly matrimony platform.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -138,7 +134,7 @@ export default function AboutPage() {
               href="/contact"
               className="border border-white/40 hover:bg-white/10 text-white font-semibold px-7 py-3 rounded-xl transition-all duration-200 text-sm"
             >
-              Contact Temple
+              Contact Us
             </Link>
           </div>
         </div>

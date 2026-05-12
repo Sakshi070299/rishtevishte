@@ -18,10 +18,10 @@ function SuccessContent() {
         <h1 className="text-2xl font-bold text-maroon mb-2">Registration Successful!</h1>
         <p className="font-hindi text-primary text-lg mb-2">आपका विवाह पंजीकरण सफल हुआ!</p>
         <p className="text-sm text-temple-brown-light mb-1">
-          Your matrimony profile has been registered and payment received. The temple committee will begin matching.
+          Your matrimony profile has been registered and payment received. TheMarriageHome.com team will begin matching.
         </p>
         <p className="font-hindi text-sm text-temple-brown-light mb-6">
-          मंदिर समिति आपके रिश्ते की खोज शुरू करेगी।
+          अपना जीवनसाथी खोजें — हमारी टीम आपके रिश्ते की खोज शुरू करेगी।
         </p>
         <div className="inline-block bg-cream-dark border border-[#E8D5C4] rounded-xl px-6 py-3 mb-6">
           <p className="text-xs text-temple-brown-light">Registration ID</p>

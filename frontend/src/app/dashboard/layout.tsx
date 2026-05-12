@@ -111,14 +111,14 @@ function DashboardLayoutInner({
               <Image
                 className="size-12"
                 unoptimized
-                src={"/icons/om-icon-v2.png"}
+                src={"/icons/marriagehome-logo.png"}
                 width={40}
                 height={40}
-                alt="om-logo"
+                alt="marriagehome-logo"
               />
               <div>
-                <h2 className="font-bold text-sm">RishteNate</h2>
-                <p className="text-xs text-gold-light font-hindi">रिश्तेसेतु</p>
+                <h2 className="font-bold text-sm">TheMarriageHome.com</h2>
+                <p className="text-xs text-gold-light font-hindi">अपना जीवनसाथी खोजें</p>
               </div>
             </Link>
           </div>
