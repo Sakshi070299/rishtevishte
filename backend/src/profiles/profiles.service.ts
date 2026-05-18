@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import { archivedProfileCreateManySafe } from "../common/archived-profile-archive";
 import { PrismaService } from "../common/prisma.service";
+import { applyMaskIfLocked, loadViewerAccess } from "../common/profile-access";
 import { Prisma, ProfileStatus, Gender, Role, RegistrationSource, PaymentStatus, DonationType,ManglikStatus, MarriageStatus, HeightUnit } from "@prisma/client";
 import {
   collectProfileIdsMatchingHeightRange,
@@ -223,6 +224,21 @@ export class ProfilesService {
       return safe;
     }
     return profile;
+  }
+
+  /**
+   * Read a profile through the access gate.
+   * - Owner / STAFF / paid USERs see the full profile.
+   * - Other USERs see only name + age + father/mother name + occupation + caste
+   *   (other fields are nulled and `_locked: true` is set on the response).
+   */
+  async findOneForViewer(id: string, viewerUserId: string) {
+    const profile = await this.prisma.profile.findUnique({ where: { id } });
+    if (!profile) throw new NotFoundException("Profile not found");
+
+    const viewer = await loadViewerAccess(this.prisma, viewerUserId);
+    const { internalRegistrationNo: _hidden, ...safe } = profile as any;
+    return applyMaskIfLocked(safe, viewer);
   }
 
   // ─── UPDATE PROFILE ───────────────────────────────

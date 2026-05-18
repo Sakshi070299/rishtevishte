@@ -1,6 +1,12 @@
 import { Injectable, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import { Prisma, ProfileStatus, Gender, ManglikStatus, Profession, MarriageStatus, HeightUnit } from '@prisma/client';
+import {
+  applyMaskIfLocked,
+  canViewFullProfile,
+  hasActiveAccess,
+  loadViewerAccess,
+} from '../common/profile-access';
 
 interface SearchFilters {
   gender?: Gender;
@@ -80,6 +86,21 @@ export class SearchService {
     return value;
   }
 
+  // ─── ACCESS-FEE STATUS (for UnlockBanner) ─────────
+  async getMyAccessStatus(userId: string) {
+    const v = await loadViewerAccess(this.prisma, userId);
+    const staff = v.role === 'TEAM' || v.role === 'MANAGER' || v.role === 'ADMIN';
+    return {
+      role: v.role,
+      isStaff: staff,
+      hasPaidAccess: v.hasPaidAccess,
+      accessExpiresAt: v.accessExpiresAt,
+      isUnlocked: staff || hasActiveAccess(v),
+      accessFeeRupees: 2100,
+      validMonths: 6,
+    };
+  }
+
   // ─── CHECK REMAINING VIEWS THIS WEEK ──────────────
   async getRemainingViews(userId: string) {
     const weekStart = this.getWeekStart();
@@ -105,6 +126,12 @@ export class SearchService {
 
   // ─── SEARCH PROFILES ──────────────────────────────
   async searchProfiles(userId: string, filters: SearchFilters) {
+    // Load access status once; used to mask profile fields if the viewer
+    // hasn't paid the ₹2100 access fee (and isn't staff).
+    const viewer = await loadViewerAccess(this.prisma, userId);
+    const maskList = <T extends Record<string, unknown> & { userId?: string | null }>(rows: T[]) =>
+      rows.map((p) => applyMaskIfLocked(p, viewer));
+
     // Must have at least one ACTIVE profile to search
     const activeProfiles = await this.prisma.profile.findMany({
       where: { userId, status: ProfileStatus.ACTIVE },
@@ -130,6 +157,7 @@ export class SearchService {
       status: true,
       fullName: true,
       gender: true,
+      userId: true, // needed so the masking helper can detect own profiles
       fatherName: true,
       guardianPhone: true,
       alternateMobile: true,
@@ -203,10 +231,11 @@ export class SearchService {
         });
 
         return {
-          profiles,
+          profiles: maskList(profiles as any),
           count: profiles.length,
           remaining: 0,
           weeklyLimit: limit,
+          isUnlocked: canViewFullProfile(viewer, null),
         };
       }
       // Weekly quota is exhausted, but we don't have searchable rows in search_logs for this week.
@@ -216,6 +245,7 @@ export class SearchService {
         count: 0,
         remaining: 0,
         weeklyLimit: limit,
+        isUnlocked: canViewFullProfile(viewer, null),
       };
     }
 
@@ -412,10 +442,11 @@ export class SearchService {
         select: searchProfileSelect,
       });
       return {
-        profiles,
+        profiles: maskList(profiles as any),
         count: profiles.length,
         remaining,
         weeklyLimit: limit,
+        isUnlocked: canViewFullProfile(viewer, null),
       };
     }
 
@@ -436,10 +467,11 @@ export class SearchService {
     const viewedAfter = viewedCount + newLogs.length;
 
     return {
-      profiles,
+      profiles: maskList(profiles as any),
       count: profiles.length,
       remaining: Math.max(0, limit - viewedAfter),
       weeklyLimit: limit,
+      isUnlocked: canViewFullProfile(viewer, null),
     };
   }
 }

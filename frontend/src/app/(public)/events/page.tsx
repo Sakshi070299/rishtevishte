@@ -183,12 +183,14 @@ export default function EventsPage() {
               <Calendar size={16} aria-hidden="true" />
               Contact Temple
             </Link>
+            {/* Donation CTA hidden — donations feature is currently disabled.
             <Link
               href="/donation"
               className="border border-[#D4A017] text-[#3D1F0B] hover:bg-[#F5E6B8] font-semibold px-6 py-2.5 rounded-xl transition-all duration-200 text-sm inline-flex items-center gap-2"
             >
               Support an Event
             </Link>
+            */}
           </div>
         </div>
       </section>

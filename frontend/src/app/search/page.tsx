@@ -10,7 +10,7 @@ import {
   Eye,
   X,
 } from "lucide-react";
-import { searchApi, resolvePhotoUrl } from "@/lib/api";
+import { searchApi, resolvePhotoUrl, accessPaymentApi } from "@/lib/api";
 import type { SearchResult, WeeklyLimitInfo, SearchFilters, HeightUnit } from "@/types";
 import {
   heightToCm,
@@ -19,6 +19,17 @@ import {
 import { downloadBiodata } from "@/lib/download-biodata";
 import { Lock } from "lucide-react";
 import { State } from "country-state-city";
+import { UnlockBanner, LockedField } from "@/components/UnlockBanner";
+
+// Years between birth date and now.
+function calcAge(dob?: string | null): string {
+  if (!dob) return "—";
+  const d = new Date(dob);
+  if (Number.isNaN(d.getTime())) return "—";
+  const diff = Date.now() - d.getTime();
+  const age = Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+  return age > 0 ? `${age} yrs` : "—";
+}
 
 const PROFESSION_LABELS: Record<string, string> = {
   PRIVATE_JOB: "Private Job",
@@ -52,8 +63,18 @@ export default function SearchPage() {
   const [weekInfo, setWeekInfo] = useState<WeeklyLimitInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
+  const [access, setAccess] = useState<{ isUnlocked: boolean; accessExpiresAt: string | null; isStaff: boolean } | null>(null);
+
+  // Load the unlock status on mount + after a successful payment.
+  const refreshAccess = () => {
+    accessPaymentApi
+      .status()
+      .then((data) => setAccess(data))
+      .catch(() => {});
+  };
 
   useEffect(() => {
+    refreshAccess();
     searchApi
       .remaining()
       .then((data) => setWeekInfo(data as WeeklyLimitInfo))
@@ -536,6 +557,17 @@ export default function SearchPage() {
       {/* Results */}
       {results && (
         <div>
+          {/* Access-fee banner — hidden for STAFF and for already-unlocked USERs */}
+          {access && !access.isStaff && (
+            <div className="mb-4">
+              <UnlockBanner
+                isUnlocked={access.isUnlocked}
+                accessExpiresAt={access.accessExpiresAt}
+                onUnlocked={refreshAccess}
+              />
+            </div>
+          )}
+
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-temple-brown">
               {results.count} Profile{results.count !== 1 ? "s" : ""} Found
@@ -549,115 +581,133 @@ export default function SearchPage() {
           </div>
 
           <div className="grid gap-4">
-            {results.profiles.map((profile) => (
+            {results.profiles.map((profile) => {
+              const locked = !!profile._locked;
+              const photoUrl = locked ? undefined : resolvePhotoUrl(profile.photoUrl);
+              return (
               <div
                 key={profile.id}
                 className="bg-white rounded-xl shadow-md border border-[#E8D5C4] p-5"
               >
                 <div className="flex gap-4">
-                  {resolvePhotoUrl(profile.photoUrl) && (
+                  {photoUrl ? (
                     <img
-                      src={resolvePhotoUrl(profile.photoUrl)}
+                      src={photoUrl}
                       alt={profile.fullName}
                       className="w-20 h-24 rounded-lg object-cover border-2 border-gold flex-shrink-0"
                     />
-                  )}
+                  ) : locked ? (
+                    <div className="w-20 h-24 rounded-lg border-2 border-amber-300 bg-amber-50 text-amber-700 flex items-center justify-center flex-shrink-0">
+                      <Lock size={22} />
+                    </div>
+                  ) : null}
                   <div className="flex-1 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2 text-sm">
                     <div>
                       <span className="text-temple-brown-light">Name:</span>{" "}
                       <strong>{profile.fullName}</strong>
                     </div>
                     <div>
-                      <span className="text-temple-brown-light">Father:</span>{" "}
-                      {profile.fatherName}
+                      <span className="text-temple-brown-light">Age:</span>{" "}
+                      {calcAge(profile.dateOfBirth)}
                     </div>
+                    <div>
+                      <span className="text-temple-brown-light">Father:</span>{" "}
+                      {profile.fatherName || <LockedField />}
+                    </div>
+                    <div>
+                      <span className="text-temple-brown-light">Mother:</span>{" "}
+                      {profile.motherName || <LockedField />}
+                    </div>
+                    <div>
+                      <span className="text-temple-brown-light">
+                        Occupation:
+                      </span>{" "}
+                      {profile.profession
+                        ? PROFESSION_LABELS[profile.profession] || profile.profession
+                        : <LockedField />}
+                      {profile.professionDetails ? ` · ${profile.professionDetails}` : ""}
+                    </div>
+                    <div>
+                      <span className="text-temple-brown-light">Caste:</span>{" "}
+                      {profile.caste || <LockedField />}
+                    </div>
+
+                    {/* Locked fields below — show real value for paid users, placeholder otherwise */}
                     <div>
                       <span className="text-temple-brown-light">Mobile:</span>{" "}
-                      <span className="inline-flex items-center gap-1 text-primary/60 font-medium text-xs">
-                        <Lock size={10} /> Hidden
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-temple-brown-light">DOB:</span>{" "}
-                      {new Date(profile.dateOfBirth).toLocaleDateString(
-                        "en-IN",
-                      )}
-                    </div>
-                    <div>
-                      <span className="text-temple-brown-light">
-                        Birth Time:
-                      </span>{" "}
-                      {profile.birthTime || "—"}
-                    </div>
-                    <div>
-                      <span className="text-temple-brown-light">
-                        Birth Place:
-                      </span>{" "}
-                      {profile.birthPlace || "—"}
+                      {locked ? <LockedField /> : (profile.guardianPhone || "—")}
                     </div>
                     <div>
                       <span className="text-temple-brown-light">Manglik:</span>{" "}
-                      <span
-                        className={`font-semibold ${profile.manglikStatus === "MANGLIK" ? "text-red-600" : "text-green-600"}`}
-                      >
-                        {profile.manglikStatus.replace("_", " ")}
-                      </span>
+                      {locked || !profile.manglikStatus ? (
+                        <LockedField />
+                      ) : (
+                        <span
+                          className={`font-semibold ${profile.manglikStatus === "MANGLIK" ? "text-red-600" : "text-green-600"}`}
+                        >
+                          {profile.manglikStatus.replace("_", " ")}
+                        </span>
+                      )}
                     </div>
                     <div>
                       <span className="text-temple-brown-light">City:</span>{" "}
-                      {profile.city || "—"}
+                      {locked ? <LockedField /> : (profile.city || "—")}
                     </div>
                     <div>
                       <span className="text-temple-brown-light">State:</span>{" "}
-                      {profile.state || "—"}
-                    </div>
-                    <div>
-                      <span className="text-temple-brown-light">
-                        Profession:
-                      </span>{" "}
-                      {PROFESSION_LABELS[profile.profession] || profile.profession}
+                      {locked ? <LockedField /> : (profile.state || "—")}
                     </div>
                     <div>
                       <span className="text-temple-brown-light">Income:</span>{" "}
-                      {(() => {
-                        const raw = profile.incomeValue?.trim();
-                        const cadence = profile.incomeType === "YEARLY" ? "Yearly" : "Monthly";
-                        if (raw) {
-                          const val = /^\d+$/.test(raw)
-                            ? parseInt(raw, 10).toLocaleString("en-IN")
-                            : raw;
-                          return `${cadence}: ${val}`;
-                        }
-                        const rupees = profile.monthlyIncome ?? null;
-                        if (!rupees) return "—";
-                        return `${cadence}: ${rupees.toLocaleString("en-IN")}`;
-                      })()}
-                    </div>
-                    <div>
-                      <span className="text-temple-brown-light">
-                        Disability:
-                      </span>{" "}
-                      {profile.disability ? "Yes" : "No"}
+                      {locked ? (
+                        <LockedField />
+                      ) : (
+                        (() => {
+                          const raw = profile.incomeValue?.trim();
+                          const cadence = profile.incomeType === "YEARLY" ? "Yearly" : "Monthly";
+                          if (raw) {
+                            const val = /^\d+$/.test(raw)
+                              ? parseInt(raw, 10).toLocaleString("en-IN")
+                              : raw;
+                            return `${cadence}: ${val}`;
+                          }
+                          const rupees = profile.monthlyIncome ?? null;
+                          if (!rupees) return "—";
+                          return `${cadence}: ${rupees.toLocaleString("en-IN")}`;
+                        })()
+                      )}
                     </div>
                     <div>
                       <span className="text-temple-brown-light">
                         Marital Status:
                       </span>{" "}
-                      {MARRIAGE_STATUS_LABELS[profile.marriageStatus] || profile.marriageStatus}
+                      {locked || !profile.marriageStatus ? (
+                        <LockedField />
+                      ) : (
+                        MARRIAGE_STATUS_LABELS[profile.marriageStatus] || profile.marriageStatus
+                      )}
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200">
-                  <button
-                    type="button"
-                    onClick={() => downloadBiodata(profile)}
-                    className="text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary font-medium hover:bg-primary/20 flex items-center gap-1"
-                  >
-                    <Eye size={12} /> View Biodata
-                  </button>
+                <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200 items-center">
+                  {!locked && (
+                    <button
+                      type="button"
+                      onClick={() => downloadBiodata(profile)}
+                      className="text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary font-medium hover:bg-primary/20 flex items-center gap-1"
+                    >
+                      <Eye size={12} /> View Biodata
+                    </button>
+                  )}
+                  {locked && (
+                    <p className="text-xs text-amber-700 flex items-center gap-1">
+                      <Lock size={12} /> Full profile (photo, mobile, family details) locked — pay ₹2100 to unlock for 6 months.
+                    </p>
+                  )}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

@@ -164,6 +164,48 @@ export const profilesApi = {
 export const searchApi = {
   search: (filters: unknown) => api('/search', { method: 'POST', body: filters }),
   remaining: () => api('/search/remaining'),
+  access: () =>
+    api<{
+      role: string;
+      isStaff: boolean;
+      hasPaidAccess: boolean;
+      accessExpiresAt: string | null;
+      isUnlocked: boolean;
+      accessFeeRupees: number;
+      validMonths: number;
+    }>('/search/access'),
+};
+
+// ─── ACCESS PAYMENT API (₹2100 profile unlock) ──────
+
+export const accessPaymentApi = {
+  status: () =>
+    api<{
+      isUnlocked: boolean;
+      isStaff: boolean;
+      accessExpiresAt: string | null;
+      accessFeeRupees: number;
+      validMonths: number;
+    }>('/payments/access/status'),
+  createOrder: () =>
+    api<
+      | { alreadyUnlocked: true; expiresAt: string }
+      | {
+          alreadyUnlocked: false;
+          accessPaymentId: string;
+          orderId: string;
+          amount: number;
+          currency: string;
+          key: string;
+          validMonths: number;
+        }
+    >('/payments/access/order', { method: 'POST' }),
+  verify: (data: {
+    accessPaymentId: string;
+    gatewayOrderId: string;
+    gatewayPaymentId: string;
+    gatewaySignature: string;
+  }) => api('/payments/access/verify', { method: 'POST', body: data }),
 };
 
 // ─── PUBLIC CONTENT API ──────────────────────────────

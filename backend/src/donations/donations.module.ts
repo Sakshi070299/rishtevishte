@@ -15,6 +15,8 @@ import { ProfilesModule } from '../profiles/profiles.module';
     DonationsService,
     { provide: PAYMENT_GATEWAY, useClass: RazorpayGateway },
   ],
-  exports: [DonationsService],
+  // Export the gateway too so other modules (e.g. AccessPaymentsModule)
+  // can reuse the same Razorpay client without instantiating a second one.
+  exports: [DonationsService, PAYMENT_GATEWAY],
 })
 export class DonationsModule {}

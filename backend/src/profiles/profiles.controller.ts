@@ -44,8 +44,13 @@ export class ProfilesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string, @Request() req: JwtRequest) {
-    const enforceOwnership = req.user.role === 'USER';
-    return this.profilesService.findOne(id, enforceOwnership ? req.user.sub : undefined);
+    // STAFF (TEAM / MANAGER / ADMIN) and the profile owner see the full profile.
+    // Other end-users see a masked teaser (name, age, parent names, occupation,
+    // caste) until they pay the ₹2100 unlock fee.
+    if (req.user.role !== 'USER') {
+      return this.profilesService.findOne(id);
+    }
+    return this.profilesService.findOneForViewer(id, req.user.sub);
   }
 
   @Patch(':id')

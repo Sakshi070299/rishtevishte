@@ -12,6 +12,11 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1',
   },
+  // Don't fail the Vercel production build on ESLint warnings.
+  // Lint is still enforced in `pnpm run lint` and CI.
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;

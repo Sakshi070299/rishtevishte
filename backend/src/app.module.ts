@@ -11,6 +11,7 @@ import { SearchModule } from './search/search.module';
 import { TeamsModule } from './teams/teams.module';
 import { AdminModule } from './admin/admin.module';
 import { DonationsModule } from './donations/donations.module';
+import { AccessPaymentsModule } from './access-payments/access-payments.module';
 import { ReportsModule } from './reports/reports.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PdfModule } from './pdf/pdf.module';
@@ -66,6 +67,7 @@ function buildThrottlerConfig(): ThrottlerModuleOptions {
     TeamsModule,
     AdminModule,
     DonationsModule,
+    AccessPaymentsModule,
     ReportsModule,
     NotificationsModule,
     PdfModule,

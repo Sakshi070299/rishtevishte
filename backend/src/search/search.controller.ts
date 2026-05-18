@@ -5,7 +5,7 @@ import { SearchService } from './search.service';
 import { SearchFiltersDto } from './search.dto';
 import { SkipThrottle } from '@nestjs/throttler';
 
-type JwtRequest = { user: { sub: string } };
+type JwtRequest = { user: { sub: string; role: string } };
 
 @ApiTags('Search')
 @ApiBearerAuth()
@@ -18,6 +18,13 @@ export class SearchController {
   @SkipThrottle()
   async search(@Request() req: JwtRequest, @Body() filters: SearchFiltersDto) {
     return this.searchService.searchProfiles(req.user.sub, filters);
+  }
+
+  /** Read-only flag — frontend uses this to decide whether to show the UnlockBanner. */
+  @Get('access')
+  @SkipThrottle()
+  async getAccess(@Request() req: JwtRequest) {
+    return this.searchService.getMyAccessStatus(req.user.sub);
   }
 
   @Get('remaining')

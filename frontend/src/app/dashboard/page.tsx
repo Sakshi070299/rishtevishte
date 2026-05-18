@@ -797,7 +797,7 @@ export default function DashboardPage() {
             </p>
           </Link>
 
-          {/* Donations */}
+          {/* Donations — hidden. Only registration payments are taken now.
           <Link
             href="/donation"
             className="card-temple group flex flex-col items-center text-center p-5"
@@ -808,6 +808,7 @@ export default function DashboardPage() {
             <p className="text-sm font-semibold text-temple-brown">Donations</p>
             <p className="font-hindi text-xs text-primary mt-0.5">दान करें</p>
           </Link>
+          */}
 
           {/* Terms & Conditions */}
           <button

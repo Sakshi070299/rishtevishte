@@ -128,10 +128,12 @@ export interface SearchFilters {
 }
 
 export interface SearchResult {
-  profiles: Profile[];
+  profiles: (Profile & { _locked?: boolean })[];
   count: number;
   remaining: number;
   weeklyLimit: number;
+  /** True when the viewer (USER role) has paid the access fee or is STAFF. */
+  isUnlocked?: boolean;
 }
 
 export interface WeeklyLimitInfo {
