@@ -23,6 +23,7 @@ export type ProfileStatus =
   | "INACTIVE";
 export type DonationType = "REGISTRATION" | "GENERAL";
 
+
 export interface User {
   id: string;
   mobile: string;
