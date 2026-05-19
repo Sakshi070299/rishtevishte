@@ -29,6 +29,7 @@ export interface User {
   mobile: string;
   name: string | null;
   role: Role;
+  email?: string | null;
 }
 
 export interface AuthResponse {
