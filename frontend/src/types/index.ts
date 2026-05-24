@@ -24,6 +24,7 @@ export type ProfileStatus =
 export type DonationType = "REGISTRATION" | "GENERAL";
 
 
+
 export interface User {
   id: string;
   mobile: string;
