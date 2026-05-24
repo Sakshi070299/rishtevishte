@@ -23,13 +23,13 @@ const INFO_ITEMS = [
   {
     icon: Phone,
     label: 'Phone',
-    content: ['9810277873', '9899957029'],
+    content: ['+91 8196019883'],
   },
   {
     icon: Mail,
     label: 'Email',
-    content: ['support@themarriagehome.com'],
-    href: 'mailto:support@themarriagehome.com',
+    content: ['admin@themarriagehome.com'],
+    href: 'mailto:admin@themarriagehome.com',
   },
   {
     icon: Clock,
@@ -68,7 +68,7 @@ export default function ContactPage() {
           <img
             src="/icons/marriagehome-logo.png"
             alt="TheMarriageHome.com logo"
-            className="mx-auto h-12 w-12 mb-3"
+            className="mx-auto h-20 w-40 mb-3"
           />
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
             Contact Us

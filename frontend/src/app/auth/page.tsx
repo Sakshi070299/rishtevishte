@@ -110,7 +110,7 @@ function AuthPageContent() {
           <div className="mb-3 flex justify-center">
             <Link href={"/"}>
               <Image
-                className="size-12 mx-auto"
+                className="size-12 h-20 w-40 mx-auto"
                 src={"/icons/marriagehome-logo.png"}
                 width={40}
                 height={40}

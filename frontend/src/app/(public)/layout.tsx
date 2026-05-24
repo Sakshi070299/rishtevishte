@@ -23,11 +23,11 @@ const SITE = {
   domain: ".com",
   tagline: "Find Your Forever Home",
   taglineHi: "अपना जीवनसाथी खोजें",
-  phone: "+91 9810277873",
+  phone: "+91 8196019883",
   email: "info@themarriagehome.com",
 };
 
-const PHONE_NUMBERS = ["9810277873", "9899957029"] as const;
+const PHONE_NUMBERS = ["8196019883"] as const;
 function telHref(num: string) {
   return `tel:+91${num.replace(/\\D/g, "")}`;
 }
@@ -40,8 +40,8 @@ const NAV = [
   { href: "/about", label: "About", hi: "परिचय" },
   { href: "/register", label: "Matrimony", hi: "विवाह" },
   { href: "/gallery", label: "Gallery", hi: "गैलरी" },
-  { href: "/events", label: "Events", hi: "कार्यक्रम" },
-  { href: "/donation", label: "Donation", hi: "दान" },
+  // { href: "/events", label: "Events", hi: "कार्यक्रम" },
+  // { href: "/donation", label: "Donation", hi: "दान" },
   { href: "/contact", label: "Contact", hi: "संपर्क" },
 ];
 
